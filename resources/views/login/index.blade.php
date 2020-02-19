@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    <link href="{{ asset('/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -27,6 +27,6 @@
 <p>Forgot your password? <u style="color:#f1c40f;">Click Here!</u></p>
   
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
-<script src="{{ asset('/js/style.js') }}"></script>
+<script src="{{ asset('js/style.js') }}"></script>
 </body>
 </html>

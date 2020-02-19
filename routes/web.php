@@ -12,10 +12,7 @@
 */
 
 Route::get('/', function() {
-    return view('home/index');
+    return view('login/index');
 });
 
-Route::get('/KhoaHoc',function(){
-	return "<h1>hello moi ng</h1>";
-});
 
