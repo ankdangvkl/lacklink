@@ -12,13 +12,17 @@
     </head>
     <body>
         <div class="login-dark">
-            @yield('admin_form_begin')
-            @yield('user_form_begin')
+            @if (session('error'))
+            <div class="alert alert-success">
+            {{ session('error') }}
+            </div>
+            @endif
+            <form action="{{ url('/login') }}" method="post">
                 <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
                 <div class="form-group"><input class="form-control" type="text" name="userName" placeholder="Username"></div>
                 <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div>
-                @csrf()
+                @csrf
                 <a href="#" class="forgot">Forgot your username or password?</a>
             </form>
         </div>

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\model;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class userInfo extends Model
+class Role extends Model
 {
     //
 }

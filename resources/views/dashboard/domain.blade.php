@@ -1,5 +1,5 @@
-@extends('dashboard.index')
+{{-- @extends('dashboard.index')
 
 @section('domain_content')
 
-@endsection
+@endsection --}}

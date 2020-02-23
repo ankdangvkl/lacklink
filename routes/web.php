@@ -11,18 +11,11 @@
 |
 */
 
-Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', 'Admin\LoginController@index');
-    Route::group(['prefix' => 'dashboard'], function () {
-        Route::post('/', 'Admin\DashboardController@index');
-        Route::get('/campaign', 'Admin\DashboardController@campaign');
-    });
-});
-
-Route::group(['prefix' => 'user'], function () {
-    Route::get('/', 'User\LoginController@index');
-    Route::group(['prefix' => 'dashboard'], function () {
-        Route::post('/', 'Admin\DashboardController@index');
-        Route::get('/campaign', 'Admin\DashboardController@campaign');
-    });
-});
+Route::get('/', 'LoginController@index');
+Route::post('/login', 'LoginController@login');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('/access', 'AccessController@index');
+Route::get('/domain', 'DomainController@index');
+Route::get('/package', 'PackageController@index');
+Route::get('/campaign', 'CampaignController@index');
+Route::get('/instruction', 'InstructionController@index');
