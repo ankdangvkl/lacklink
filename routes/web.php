@@ -11,11 +11,18 @@
 |
 */
 
-Route::get('/', function() {
-    return view('home/index');
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/', 'Admin\LoginController@index');
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::post('/', 'Admin\DashboardController@index');
+        Route::get('/campaign', 'Admin\DashboardController@campaign');
+    });
 });
 
-Route::get('/KhoaHoc',function(){
-	return "<h1>hello moi ng</h1>";
+Route::group(['prefix' => 'user'], function () {
+    Route::get('/', 'User\LoginController@index');
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::post('/', 'Admin\DashboardController@index');
+        Route::get('/campaign', 'Admin\DashboardController@campaign');
+    });
 });
-
