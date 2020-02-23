@@ -11,8 +11,18 @@
 |
 */
 
-Route::get('/', function() {
-    return view('login/index');
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/', 'Admin\LoginController@index');
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::post('/', 'Admin\DashboardController@index');
+        Route::get('/campaign', 'Admin\DashboardController@campaign');
+    });
 });
 
-
+Route::group(['prefix' => 'user'], function () {
+    Route::get('/', 'User\LoginController@index');
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::post('/', 'Admin\DashboardController@index');
+        Route::get('/campaign', 'Admin\DashboardController@campaign');
+    });
+});
