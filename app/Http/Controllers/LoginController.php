@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Common\Session;
-use App\UserSessionInfo;
-use App\Http\common\RoleEnum;
-use App\Users;
 use App\Http\service\LoginService;
 
 class LoginController extends Controller
@@ -23,6 +19,9 @@ class LoginController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->session()->has('userInfo')) {
+            return redirect('/dashboard');
+        }
         return view('common/login');
     }
 
@@ -37,5 +36,12 @@ class LoginController extends Controller
         }
         $request->session()->put('userInfo', $this->user);
         return redirect('/dashboard');
+    }
+
+    public function logout(Request $request) {
+        if ($request->session()->has('userInfo')) {
+            $request->session()->flush();
+            return redirect('/');
+        }
     }
 }

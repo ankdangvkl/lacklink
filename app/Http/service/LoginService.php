@@ -31,6 +31,6 @@ class LoginService
 
     public function isAdmin($user)
     {
-        return $user->role == RoleEnum::ADMIN ? true : false;
+        return $user->role_name == RoleEnum::ADMIN ? true : false;
     }
 }
