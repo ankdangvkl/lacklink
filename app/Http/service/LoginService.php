@@ -3,7 +3,7 @@
 namespace App\Http\service;
 
 use Illuminate\Http\Request;
-use App\Http\common\RoleEnum;
+use App\Http\common\ConstantVariable;
 
 class LoginService
 {
@@ -16,8 +16,7 @@ class LoginService
     public function getUserByName(Request $request)
     {
         return \DB::table('users')
-            ->join('roles', 'users.id', '=', 'roles.id')
-            ->where('users.user_name', '=', $request->userName)
+            ->where('users.name', '=', $request->userName)
             ->first();
     }
 
@@ -26,11 +25,15 @@ class LoginService
         if ($request->password != $user->password) {
             return false;
         }
+
+        if ($user->status == 0) {
+            return false;
+        }
         return true;
     }
 
     public function isAdmin($user)
     {
-        return $user->role_name == RoleEnum::ADMIN ? true : false;
+        return $user->role_name == ConstantVariable::ADMIN ? true : false;
     }
 }

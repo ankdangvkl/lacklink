@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\common\RoleEnum;
 use Illuminate\Http\Request;
+use App\Http\common\ConstantVariable;
 
 class UserController extends Controller
 {
@@ -21,7 +21,7 @@ class UserController extends Controller
             return redirect('/');
         }
 
-        if ($this->user->role_name != RoleEnum::ADMIN) {
+        if ($this->user->role_name != ConstantVariable::ADMIN) {
             return redirect('/');
         }
 
@@ -31,11 +31,11 @@ class UserController extends Controller
     public function createUser(Request $request)
     {
         $data = array(
-            'user_name' => $request->input('userName'),
+            'name' => $request->input('userName'),
             "password" => $request->input('password'),
-            "roles_id" => 2,
-            "data_url" => '',
-            'active' => 1,
+            "directory" => '',
+            "roles_id" => ConstantVariable::USER,
+            'status' => ConstantVariable::STATUS_ACTIVE,
             'created_date' => date('yy-m-d h:i:s', time()),
             'created_by' => 'Admin',
             'updated_date' => date('yy-m-d h:i:s', time()),
