@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\common\ConstantVariable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\service\LoginService;
@@ -19,8 +20,9 @@ class LoginController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->session()->has('userInfo')) {
-            return redirect('/dashboard');
+        $this->user = $request->session()->get('userInfo');
+        if ($this->user != null) {
+            return $this->user->role == ConstantVariable::ADMIN ? redirect('/admin/dashboard') : redirect('/user/dashboard');
         }
         return view('common/login');
     }
@@ -34,14 +36,16 @@ class LoginController extends Controller
         if (!$this->loginService->validUserPassword($request, $this->user)) {
             return redirect('/')->with('error', 'Username or password are not currect! Please try again!');
         }
+
         $request->session()->put('userInfo', $this->user);
-        return redirect('/dashboard');
+        return $this->user->role == ConstantVariable::ADMIN ? redirect('/admin/dashboard') : redirect('/user/dashboard');
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         if ($request->session()->has('userInfo')) {
             $request->session()->flush();
-            return redirect('/');
         }
+        return redirect('/');
     }
 }
