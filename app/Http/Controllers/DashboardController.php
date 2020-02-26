@@ -13,7 +13,7 @@ class DashboardController extends Controller
         if ($userInfo == null) {
             return view('common/login');
         }
-        return view('dashboard/index');
+        return view('user/dashboard/index');
     }
     // del session
     // $request->session()->forget('key');
