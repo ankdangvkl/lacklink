@@ -11,16 +11,11 @@
             </a>
             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item"  href="javascript:;"> Profile</a>
-            <a href="{{ url('/create-user') }}" class="dropdown-item"  href="javascript:;">
-                  {{-- <span class="badge bg-red pull-right">50%</span> --}}
-                  <span>Create user</span>
-                </a>
-            {{-- <a class="dropdown-item"  href="javascript:;">Help</a> --}}
             <a class="dropdown-item"  href="{{ url('/logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
             </div>
           </li>
           <li class="nav-item">
-              <a href="javascript:;" class="user-profile" aria-haspopup="true" aria-expanded="false">
+          <a href="{{ url('/user/package') }}" class="user-profile" aria-haspopup="true" aria-expanded="false">
                 Nạp tiền
               </a>
             </li>
