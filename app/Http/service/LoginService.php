@@ -8,19 +8,26 @@ use App\Http\common\ConstantVariable;
 class LoginService
 {
     // private $user;
+    private $constantVariable;
 
-    public function __construct()
+    public function __construct(ConstantVariable $constantVariable)
     {
+        $this->constantVariable = $constantVariable->getLstConst();
     }
 
     public function getUserByName(Request $request)
     {
-        return \DB::table('users')
-            ->where('users.name', '=', $request->userName)
-            ->first();
+        $user = \DB::table('users')
+        ->where('users.name', '=', $request->userName)
+        ->where('users.status', '<>', $this->constantVariable['status_deactive'])
+        ->first();
+        if ($user == null || !$this->validUser($request, $user)) {
+            return null;
+        }
+        return $user;
     }
 
-    public function validUserPassword(Request $request, $user)
+    private function validUser(Request $request, $user)
     {
         if ($request->password != $user->password) {
             return false;
@@ -30,10 +37,5 @@ class LoginService
             return false;
         }
         return true;
-    }
-
-    public function isAdmin($user)
-    {
-        return $user->role_name == ConstantVariable::ADMIN ? true : false;
     }
 }
