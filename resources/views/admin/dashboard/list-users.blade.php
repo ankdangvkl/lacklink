@@ -20,31 +20,43 @@
             <th scope="col">Account user</th>
             <th scope="col">Số lượt click còn</th>
             <th scope="col">Trạng thái tài khoản</th>
-            <th scope="col" style="width: 15%;"></th>
+            <th scope="col" style="width: 20%;"></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td  style="width: 15%;"><a class="btn btn-info" href="">Active</a><a class="btn btn-danger" href="">Deactive</a></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td  style="width: 15%;"><a class="btn btn-info" href="">Active</a><a class="btn btn-danger" href="">Deactive</a></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            <td  style="width: 15%;"><a class="btn btn-info" href="">Active</a><a class="btn btn-danger" href="">Deactive</a></td>
-          </tr>
+                @if($listUser == null)
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td  style="width: 20%;"><a class="btn btn-secondary" href="#">Chi tiết</a><a class="btn btn-info" href="">Active</a><a class="btn btn-danger" href="">Deactive</a></td>
+                </tr>
+                @else
+                @for ($i = 0; $i < count($listUser); $i++)
+                <tr>
+                    <th scope="row">{{ $listUser[$i]->id }}</th>
+                    <td>{{ $listUser[$i]->name }}</td>
+                    <td>Otto</td>
+                    <td>
+                    @if($listUser[$i]->status == 1)
+                        Active
+                    @else
+                        Deactive
+                    @endif
+                    </td>
+                    <td style="width: 20%;">
+                        <a class="btn btn-secondary" href="{{ url('user-detail/' . $listUser[$i]->id) }}">Chi tiết</a>
+                        @if($listUser[$i]->status == 0)
+                            <a class="btn btn-info" href="{{ url('user-active/' . $listUser[$i]->id) }}">Active</a>
+                        @endIf
+                        @if($listUser[$i]->status == 1)
+                            <a class="btn btn-danger" href="{{ url('user-deactive/' . $listUser[$i]->id) }}">Deactive</a>
+                        @endIf
+                    </td>
+                </tr>
+                @endfor
+                @endIf
         </tbody>
       </table>
     </div>

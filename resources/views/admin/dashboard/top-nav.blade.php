@@ -8,7 +8,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/admin/create-user') }}" class="dropdown-item">
+                    <a href="{{ url('/create-user') }}" class="dropdown-item">
                         <span>Create user</span>
                     </a>
                 </li>
