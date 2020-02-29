@@ -12,18 +12,12 @@
     </head>
     <body>
         <div class="login-dark">
-            @if (isset($error))
-            <div class="alert alert-success">
-            {{ $error }}
-            </div>
-            @endif
-            <form action="{{ url('/') }}" method="post">
-                <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-                <div class="form-group"><input class="form-control" type="text" name="userName" placeholder="Username"></div>
-                <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-                <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div>
-                @csrf
-                <a href="#" class="forgot">Forgot your username or password?</a>
+            <form>
+            <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+            @foreach ($user as $item => $value)
+            <div class="form-group"><p class="form-control">{{ $value }}</p></div>
+            @endforeach
+            <div class="form-group"><a href="{{ url('/') }}" class="btn btn-primary btn-block">Back</a></div>
             </form>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
