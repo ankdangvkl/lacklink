@@ -4,35 +4,31 @@ namespace App\Http\common;
 
 use Illuminate\Http\Request;
 
-use App\Http\common\ConstantVariable;
+use App\Http\common\EnvVariable;
 
 class CookieService
 {
+    private $lstVar;
     private $userCookie;
-    private $lstConst;
 
-    public function __construct(ConstantVariable $constantVariable)
+    public function __construct(EnvVariable $envVariable)
     {
-        $this->lstConst  = $constantVariable->getLstConst();
+        $this->lstVar  = $envVariable->getLstVar();
     }
 
-    /**
-     *
-     * return true if has cookie.
-     */
     public function getCookie(Request $request)
     {
-        $this->userCookie = $request->cookie($this->lstConst['cookie_name']);
+        $this->userCookie = $request->cookie(ImmuableVariable::COOKIE_NAME);
         return $this->userCookie != null ? json_decode($this->userCookie) : $this->userCookie;
     }
 
     public function setCookie(Request $request, $userInfo)
     {
-        if (self::getCookie($request) == null) {
+        if ($this->getCookie($request) == null) {
             \Cookie::queue(\Cookie::make(
-                $this->lstConst['cookie_name'],
+                ImmuableVariable::COOKIE_NAME,
                 $this->generateUserCookieData($userInfo),
-                $this->lstConst['cookie_time']
+                ImmuableVariable::COOKIE_TIME
             ));
         }
     }
@@ -40,21 +36,20 @@ class CookieService
     public function forgetCookie(Request $request)
     {
         if ($this->getCookie($request) != null) {
-            \Cookie::queue(\Cookie::forget($this->lstConst['cookie_name']));
+            \Cookie::queue(\Cookie::forget(ImmuableVariable::COOKIE_NAME));
         }
     }
 
     public function isAdmin(Request $request)
     {
-        $userCookie = self::getCookie($request);
-        return ($userCookie != null && $userCookie->role == $this->lstConst['admin']);
+        $userCookie = $this->getCookie($request);
+        return ($userCookie != null && $userCookie->role == ImmuableVariable::ADMIN_ROLE);
     }
 
     private function generateUserCookieData($user)
     {
-        return '{"username":'   . '"' . $user->name     . '",'
-                . '"password":' . '"' . $user->password . '",'
-                . '"role":'     . '"' . $user->role     . '",'
-                . '"status":'   . '"' . $user->status   . '"}';
+        return '{"username":' . '"' . $user->name   . '",'
+                . '"role":'   . '"' . $user->role   . '",'
+                . '"status":' . '"' . $user->status . '"}';
     }
 }

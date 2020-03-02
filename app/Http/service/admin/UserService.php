@@ -2,16 +2,19 @@
 
 namespace App\Http\service\admin;
 
-use App\Http\common\ConstantVariable;
-use Exception;
+use App\Http\common\EnvVariable;
+use App\Http\common\ImmuableVariable;
+use App\Http\repositories\UserRepository;
 
 class UserService
 {
-    private $constantVariable;
+    private $envVariable;
+    private $userRepository;
 
-    public function __construct(ConstantVariable $constantVariable)
+    public function __construct(EnvVariable $envVariable, UserRepository $userRepository)
     {
-        $this->constantVariable = $constantVariable->getLstConst();
+        $this->envVariable = $envVariable->getLstVar();
+        $this->userRepository = $userRepository;
     }
 
     public function getUserByName($username)
@@ -20,7 +23,7 @@ class UserService
         return \DB::table('users')->where('name', '=', $username)->first();
     }
 
-    public function getUserById($id)
+    public function getById($id)
     {
         // select user by id
         return \DB::table('users')->where('id', '=', $id)->first();
@@ -28,17 +31,19 @@ class UserService
 
     public function getAllUser()
     {
-        return \DB::table('users')
-            ->select('id', 'name', 'directory', 'status')
-            ->where('role', '<>', $this->constantVariable['admin'])
-            ->get();
+        return $this->userRepository->getAll();
     }
 
     public function addUser($userInfo)
     {
-        $dirPath = resource_path($this->constantVariable['user_file_path'] . $userInfo['username']);
+        $dirPath = resource_path(ImmuableVariable::USER_FILE_PATH . '/' . $userInfo['username']);
         $this->handlerUserJsonData($dirPath, $userInfo);
-        \DB::table('users')->insert($this->generateUserData($userInfo, $dirPath));
+        $this->userRepository->addUser($this->generateUserData($userInfo, $dirPath));
+    }
+
+    public function updateUserStatus($id)
+    {
+        return $this->userRepository->updateUserStatus($id);
     }
 
     private function handlerUserJsonData($dirPath, $userInfo)
@@ -50,14 +55,9 @@ class UserService
         }
         $data = json_encode([
             'username' => $userInfo['username'],
-            'password' => $userInfo['password'],
             'Total click' => 10000,
-            'currentTotalClick' => 11000,
             'trafficSales' => 12345,
-            'currentTrafficSales' => 123456,
             'botTraffic' => 12345678,
-            'currentBotTraffic' => 123456789,
-            'currentBlockRate' => 50,
             'blockRate' => 30
         ]);
         \File::put($filePath, $data);
@@ -69,8 +69,8 @@ class UserService
             'name'         => $userInfo['username'],
             "password"     => $userInfo['password'],
             "directory"    => $dirPath,
-            "role"         => $this->constantVariable['user'],
-            'status'       => $this->constantVariable['status_deactive'],
+            "role"         => ImmuableVariable::USER_ROLE,
+            'status'       => ImmuableVariable::STATUS_DEACTIVE,
             'created_date' => date('yy-m-d h:i:s', time()),
             'created_by'   => 'Admin',
             'updated_date' => date('yy-m-d h:i:s', time()),

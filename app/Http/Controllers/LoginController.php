@@ -2,46 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\common\ConstantVariable;
-use App\Http\Controllers\Controller;
+use App\Http\common\EnvVariable;
+use App\Http\common\ImmuableVariable;
 use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
 use App\Http\service\LoginService;
-use App\Http\common\CookieService;
 use App\Http\common\Message;
 use App\Http\service\admin\UserService;
 
 class LoginController extends Controller
 {
-    private $cookieService;
-    private $user;
+    private $lstVar;
     private $loginService;
+    private $user;
     private $userService;
-    private $lstenv;
+
+    // Temp
+    private const listUser = 'listUser';
 
     public function __construct(
         LoginService $loginService,
-        CookieService $cookieService,
         UserService $userService,
-        ConstantVariable $constantVariable
+        EnvVariable $envVariable
     ) {
+        $this->lstVar = $envVariable->getLstVar();
         $this->loginService = $loginService;
-        $this->cookieService = $cookieService;
         $this->userService = $userService;
-        $this->lstenv = $constantVariable->getLstConst();
     }
 
     public function index(Request $request)
     {
-        if ($this->cookieService->getCookie($request) == null) {
-            return view('common/login');
+        if ($this->loginService->getCookie($request) == null) {
+            return view(ImmuableVariable::LOGIN);
         } else {
-            if ($this->cookieService->isAdmin($request)) {
-                return view(
-                    'admin/dashboard/index',
-                    ['listUser' => $this->userService->getAllUser()]
-                );
+            if ($this->loginService->isAdmin($request)) {
+                return view(ImmuableVariable::ADMIN_DASHBOARD_INDEX)
+                    ->with(self::listUser, $this->userService->getAllUser());
             }
-            return view('user/dashboard/index');
+            return view(ImmuableVariable::USER_DASHBOARD_INDEX);
         }
     }
 
@@ -49,24 +48,22 @@ class LoginController extends Controller
     {
         $this->user = $this->loginService->getUserByName($request);
         if ($this->user == null) {
-            return view('common/login')->with('error', Message::ERR_LOGIN);
+            return view(ImmuableVariable::LOGIN)->with('error', Message::ERR_LOGIN);
         }
-        $this->cookieService->setCookie($request, $this->user);
-        if ($this->user->role == $this->lstenv['admin']) {
-            return view(
-                'admin/dashboard/index',
-                ['listUser' => $this->userService->getAllUser()]
-            );
+        $this->loginService->setCookie($request, $this->user);
+        if ($this->user->role == ImmuableVariable::ADMIN_ROLE) {
+            return view(ImmuableVariable::ADMIN_DASHBOARD_INDEX)
+                ->with(self::listUser, $this->userService->getAllUser());
         }
-        return view('user/dashboard/index');
+        return view(ImmuableVariable::USER_DASHBOARD_INDEX);
     }
 
     public function logout(Request $request)
     {
-        if ($this->cookieService->getCookie($request) != null) {
-            $this->cookieService->forgetCookie($request);
-            return redirect('/');
+        if ($this->loginService->getCookie($request) != null) {
+            $this->loginService->forgetCookie($request);
+            return redirect(ImmuableVariable::INDEX_URL);
         }
-        return redirect()->back();
+        return view(ImmuableVariable::LOGIN);
     }
 }

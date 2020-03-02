@@ -48,10 +48,10 @@
                     <td style="width: 20%;">
                         <a class="btn btn-secondary" href="{{ url('user-detail/' . $listUser[$i]->id) }}">Chi tiết</a>
                         @if($listUser[$i]->status == 0)
-                            <a class="btn btn-info" href="{{ url('user-active/' . $listUser[$i]->id) }}">Active</a>
+                            <a class="btn btn-info" href="{{ url('user-status-update/' . $listUser[$i]->id) }}">Active</a>
                         @endIf
                         @if($listUser[$i]->status == 1)
-                            <a class="btn btn-danger" href="{{ url('user-deactive/' . $listUser[$i]->id) }}">Deactive</a>
+                            <a class="btn btn-danger" href="{{ url('user-status-update/' . $listUser[$i]->id) }}">Deactive</a>
                         @endIf
                     </td>
                 </tr>
