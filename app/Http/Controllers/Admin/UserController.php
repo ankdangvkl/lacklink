@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 
 use App\Http\common\CookieService;
+use App\Http\common\ImmuableVariable;
 use App\Http\Controllers\Controller;
 use App\Http\service\admin\UserService;
 
@@ -27,7 +28,7 @@ class UserController extends Controller
             return redirect('/');
         }
         $this->listUser = $this->userService->getAllUser();
-        return view('admin/user-registration')->with('listUser', $this->listUser);
+        return view(ImmuableVariable::ADMIN_USER_REGIST)->with('listUser', $this->listUser);
     }
 
     public function createUser(Request $request)
@@ -39,9 +40,9 @@ class UserController extends Controller
                     'password' => $request->input('password')
                 ]);
             }
-            return redirect('/');
+            return redirect(ImmuableVariable::INDEX_URL)->with('susscess', 'Create user successfully!');
         } catch (Exception $ex) {
-            return redirect()->back();
+            return redirect('/')->with('error', $ex);
         }
     }
 
@@ -50,6 +51,12 @@ class UserController extends Controller
         if (!$this->cookieService->isAdmin($request)) {
             return redirect()->back();
         }
-        return view('/admin/user-detail')->with('user', $this->userService->getUserById($id));
+        return view(ImmuableVariable::ADMIN_USER_DETAIL)->with('user', $this->userService->getById($id));
+    }
+
+    public function updateUserStatus($id)
+    {
+        $this->userService->updateUserStatus($id);
+        return redirect()->back();
     }
 }

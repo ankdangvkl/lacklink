@@ -2,40 +2,34 @@
 
 namespace App\Http\service;
 
+use App\Http\common\CookieService;
 use Illuminate\Http\Request;
-use App\Http\common\ConstantVariable;
 
-class LoginService
+use App\Http\common\ProjectVariable;
+use App\Http\repositories\LoginRepository;
+
+class LoginService extends CookieService
 {
-    // private $user;
-    private $constantVariable;
+    private $loginRepository;
 
-    public function __construct(ConstantVariable $constantVariable)
+    public function __construct(LoginRepository $loginRepository)
     {
-        $this->constantVariable = $constantVariable->getLstConst();
+        $this->loginRepository = $loginRepository;
     }
 
     public function getUserByName(Request $request)
     {
-        $user = \DB::table('users')
-        ->where('users.name', '=', $request->userName)
-        ->where('users.status', '<>', $this->constantVariable['status_deactive'])
-        ->first();
-        if ($user == null || !$this->validUser($request, $user)) {
+        $user = $this->loginRepository->getUserByName('users', $request->input('userName'));
+        if ($user == null || !$this->validUser($request->input('password'), $user)) {
             return null;
         }
         return $user;
     }
 
-    private function validUser(Request $request, $user)
+    private function validUser($requestPassword, $user)
     {
-        if ($request->password != $user->password) {
-            return false;
-        }
-
-        if ($user->status == 0) {
-            return false;
-        }
+        if ($requestPassword != $user->password) { return false; }
+        if ($user->status == 0) { return false; }
         return true;
     }
 }
