@@ -2,17 +2,13 @@
 
 namespace App\Http\repositories;
 
-use App\Http\common\EnvVariable;
-use App\Http\common\ProjectVariable;
+use App\Http\common\ImmuableVariable;
 use App\Http\common\Repositories;
 
-class UserUserRepository implements Repositories {
-
-    private $envVariable;
-
-    public function __construct(EnvVariable $envVariable)
+class UserUserRepository implements Repositories
+{
+    public function __construct()
     {
-        $this->envVariable = $envVariable->getLstVar();
     }
 
     public function addUser($data)
@@ -24,7 +20,7 @@ class UserUserRepository implements Repositories {
     {
         return \DB::table('users')
         ->select('id', 'name', 'directory', 'status')
-        ->where('role', '<>', $this->envVariable['admin'])
+        ->where('role', '<>', ImmuableVariable::ADMIN_ROLE)
         ->get();
     }
 
@@ -32,7 +28,7 @@ class UserUserRepository implements Repositories {
     {
         return \DB::table($table)
             ->where('id', $id)
-            ->where('role', '<>', $this->projectVariable['admin'])
+            ->where('role', '<>', ImmuableVariable::ADMIN_ROLE)
             ->first();
     }
 

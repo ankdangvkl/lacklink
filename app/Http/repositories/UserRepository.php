@@ -2,29 +2,22 @@
 
 namespace App\Http\repositories;
 
-use App\Http\common\EnvVariable;
 use App\Http\common\ImmuableVariable;
-use App\Http\common\ProjectVariable;
-use App\Http\common\Repositories;
 
-class UserRepository {
-
-    private $envVariable;
-
-    public function __construct(EnvVariable $envVariable)
+class UserRepository
+{
+    public function __construct()
     {
-        $this->envVariable = $envVariable->getLstVar();
     }
 
-    public function addUser($data)
+    public function addUser($table, $data)
     {
-        \DB::table('users')->insert($data);
+        \DB::table($table)->insert($data);
     }
 
-    public function getAll()
+    public function getAll($table)
     {
-        return \DB::table('users')
-        ->select('id', 'name', 'directory', 'status')
+        return \DB::table($table)
         ->where('role', '<>', ImmuableVariable::ADMIN_ROLE)
         ->get();
     }
@@ -37,10 +30,10 @@ class UserRepository {
             ->first();
     }
 
-    public function getUserByName($username)
+    public function getUserByName($table, $username)
     {
         // select user by name
-        return \DB::table('users')->where('name', '=', $username)->first();
+        return \DB::table($table)->where('name', '=', $username)->first();
     }
 
     public function updateUserStatus($id)
@@ -55,6 +48,10 @@ class UserRepository {
         }
         return \DB::table('users')
         ->where('id', $id)
-        ->update(array('status' => $user->status));
+        ->update(array(
+            'status' => $user->status
+            ,'updated_date' => date('yy-m-d h:i:s', time())
+            ,'updated_by' => 'Admin'
+        ));
     }
 }

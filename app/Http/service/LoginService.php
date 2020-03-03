@@ -5,8 +5,8 @@ namespace App\Http\service;
 use App\Http\common\CookieService;
 use Illuminate\Http\Request;
 
-use App\Http\common\ProjectVariable;
 use App\Http\repositories\LoginRepository;
+use Illuminate\Support\Facades\Log;
 
 class LoginService extends CookieService
 {
@@ -28,8 +28,17 @@ class LoginService extends CookieService
 
     private function validUser($requestPassword, $user)
     {
-        if ($requestPassword != $user->password) { return false; }
-        if ($user->status == 0) { return false; }
+        if ($requestPassword != $user->password) {
+            Log::info('//====================================================================//');
+            Log::info('//   Username and password not match together');
+            Log::info('//   Input password: [' . $requestPassword . '], password from database: [' . $user->password . ']');
+            return false;
+        }
+        if ($user->status == 0) {
+            Log::info('//====================================================================//');
+            Log::info('//   User: ['. $user->name . '] are no longger actived! Status are deactived!');
+            return false;
+        }
         return true;
     }
 }
