@@ -13,7 +13,11 @@ class ImmuableVariable
     const COOKIE_NAME  = 'user-account'
           ,COOKIE_TIME = 1440;
 
-    const USER_FILE_PATH = 'data/user';
+    const USER_FILE_PATH = 'domain/user'
+          ,USER_DATA_JSON_FILE = '/data.json'
+          ,USER_EDIT_PHP_FILE = '/edit.php'
+          ,USER_INDEX_PHP_FILE = '/index.php'
+          ,USER_TRACKING_FILE = '/trackingtrackingfile.txt';
 
     // view file
     const ADMIN_DASHBOARD_INDEX = 'admin/dashboard/index'
@@ -33,5 +37,8 @@ class ImmuableVariable
           ,PACKAGE_URL      = '/package'
           ,CAMPAIGN_URL     = '/campaign'
           ,INSTRUCTION_URL  = '/instruction';
+
+    // table name
+    const USERS_TABLE = 'users';
 
 }

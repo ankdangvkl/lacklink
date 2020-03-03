@@ -3,31 +3,38 @@
 namespace App\Http\common;
 
 use Illuminate\Http\Request;
-
-use App\Http\common\EnvVariable;
+use Illuminate\Support\Facades\Log;
 
 class CookieService
 {
-    private $lstVar;
     private $userCookie;
 
-    public function __construct(EnvVariable $envVariable)
+    public function __construct()
     {
-        $this->lstVar  = $envVariable->getLstVar();
     }
 
     public function getCookie(Request $request)
     {
+        Log::info('//====================================================================//');
+        Log::info('//   Get cookie!');
         $this->userCookie = $request->cookie(ImmuableVariable::COOKIE_NAME);
         return $this->userCookie != null ? json_decode($this->userCookie) : $this->userCookie;
     }
 
     public function setCookie(Request $request, $userInfo)
     {
+
         if ($this->getCookie($request) == null) {
+            $cookieData = $this->generateUserCookieData($userInfo);
+            Log::info('//====================================================================//');
+            Log::info('//   Cookie is not exists!');
+            Log::info('//   Create cookie!');
+            Log::info('//   Cookie name: ' . ImmuableVariable::COOKIE_NAME);
+            Log::info('//   Cookie time: ' . ImmuableVariable::COOKIE_TIME);
+            Log::info('//   Cookie data: ' . $cookieData);
             \Cookie::queue(\Cookie::make(
                 ImmuableVariable::COOKIE_NAME,
-                $this->generateUserCookieData($userInfo),
+                $cookieData,
                 ImmuableVariable::COOKIE_TIME
             ));
         }
@@ -36,6 +43,8 @@ class CookieService
     public function forgetCookie(Request $request)
     {
         if ($this->getCookie($request) != null) {
+            Log::info('//====================================================================//');
+            Log::info('//   Remove cookie: ' . ImmuableVariable::COOKIE_NAME);
             \Cookie::queue(\Cookie::forget(ImmuableVariable::COOKIE_NAME));
         }
     }
