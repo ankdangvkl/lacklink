@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\common;
+namespace App\Http\common\Constant;
 
 class Status
 {
-  const USER_ACTIVE = 1
-        ,USER_DEACTIVE = 0;
+  const ACTIVE = 1
+        ,DEACTIVE = 0;
 }

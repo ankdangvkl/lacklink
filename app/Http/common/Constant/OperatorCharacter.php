@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\common;
+namespace App\Http\common\Constant;
 
 /**
  * Operator character for sql query, concat string.

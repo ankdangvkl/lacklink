@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\common;
+namespace App\Http\common\Constant;
 
 class CookieInfo
 {
-    const COOKIE_NAME  = 'user-account'
-          ,COOKIE_TIME = 1440;
+    const NAME  = 'user-account'
+          ,TIME = 1440;
 }
