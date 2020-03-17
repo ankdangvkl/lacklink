@@ -12,7 +12,7 @@ class UserRepository
 
     public function addUser($table, $data)
     {
-        \DB::table($table)->insert($data);
+        return \DB::table($table)->insert($data);
     }
 
     public function getAll($table)

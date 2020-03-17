@@ -17,6 +17,7 @@ class LoginController extends Controller
     private $user;
     private $userService;
     private $lstUser;
+    private $userUrl;
 
     // Temp
     private $listUser = 'listUser';
@@ -27,10 +28,12 @@ class LoginController extends Controller
     ) {
         $this->loginService = $loginService;
         $this->userService = $userService;
+        $this->userUrl = include 'UserUrl.php';
     }
 
     public function index(Request $request)
     {
+      dd($userUrl);
         Log::info('//====================================================================//');
         Log::info('//   URL: ' . url(ImmuableVariable::INDEX_URL));
         Log::info('//   Request: ' . $request);

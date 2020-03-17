@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\common\CookieService;
 use App\Http\common\ImmuableVariable;
+use App\Http\common\ProjectUrl;
 use App\Http\Controllers\Controller;
 use App\Http\service\admin\UserService;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         Log::info('//====================================================================//');
-        Log::info('//   URL: ' . url(ImmuableVariable::CREATE_USER_URL));
+        Log::info('//   URL: ' . url(ProjectUrl::CREATE_USER));
         Log::info('//   Request: ' . $request);
         if (!$this->userService->isAdmin($request)) {
             Log::info('//   Normal user trying access to admin page.');
