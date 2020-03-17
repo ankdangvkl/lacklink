@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\common;
+namespace App\Http\common\Constant;
 
 class Permission
 {
-  const ADMIN_ROLE = 'ADMIN'
-        ,USER_ROLE = 'USER';
+  const ADMIN = 'ADMIN'
+        ,USER = 'USER';
 }

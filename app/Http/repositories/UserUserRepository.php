@@ -2,7 +2,7 @@
 
 namespace App\Http\repositories;
 
-use App\Http\common\ImmuableVariable;
+use App\Http\common\Constant\Permission;
 use App\Http\common\Repositories;
 
 class UserUserRepository implements Repositories
@@ -20,7 +20,7 @@ class UserUserRepository implements Repositories
     {
         return \DB::table('users')
         ->select('id', 'name', 'directory', 'status')
-        ->where('role', '<>', ImmuableVariable::ADMIN_ROLE)
+        ->where('role', '<>', Permission::ADMIN)
         ->get();
     }
 
@@ -28,7 +28,7 @@ class UserUserRepository implements Repositories
     {
         return \DB::table($table)
             ->where('id', $id)
-            ->where('role', '<>', ImmuableVariable::ADMIN_ROLE)
+            ->where('role', '<>', Permission::ADMIN)
             ->first();
     }
 

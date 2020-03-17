@@ -20,7 +20,7 @@
             <th scope="col">Account user</th>
             <th scope="col">Số lượt click còn</th>
             <th scope="col">Trạng thái tài khoản</th>
-            <th scope="col" style="width: 20%;"></th>
+            <th scope="col" style="width: 20%;">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@
                     <td>Mark</td>
                     <td>Otto</td>
                     <td>@mdo</td>
-                    <td  style="width: 20%;"><a class="btn btn-secondary" href="#">Chi tiết</a><a class="btn btn-info" href="">Active</a><a class="btn btn-danger" href="">Deactive</a></td>
+                    <td  style="width: 15%;"><a class="btn btn-secondary" href="#">Chi tiết</a><a class="btn btn-info" href="">Active</a><a class="btn btn-danger" href="">Deactive</a></td>
                 </tr>
                 @else
                 @for ($i = 0; $i < count($listUser); $i++)
@@ -40,12 +40,12 @@
                     <td>Otto</td>
                     <td>
                     @if($listUser[$i]->status == 1)
-                        Active
+                        <span class="btn btn-info">Active</span>
                     @else
-                        Deactive
+                      <span class="btn btn-danger">Deactive</span>
                     @endif
                     </td>
-                    <td style="width: 20%;">
+                    <td style="width: 15%;">
                         @if($listUser[$i]->status == 0)
                             <a class="btn btn-info" href="{{ url('user-status-update/' . $listUser[$i]->id) }}">Active</a>
                         @endIf

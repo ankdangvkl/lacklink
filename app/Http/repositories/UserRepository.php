@@ -2,7 +2,7 @@
 
 namespace App\Http\repositories;
 
-use App\Http\common\ImmuableVariable;
+use App\Http\common\Constant\Permission;
 
 class UserRepository
 {
@@ -18,7 +18,7 @@ class UserRepository
     public function getAll($table)
     {
         return \DB::table($table)
-        ->where('role', '<>', ImmuableVariable::ADMIN_ROLE)
+        ->where('role', '<>', Permission::ADMIN)
         ->get();
     }
 
@@ -26,7 +26,7 @@ class UserRepository
     {
         return \DB::table($table)
             ->where('id', $id)
-            ->where('role', '<>', ImmuableVariable::ADMIN_ROLE)
+            ->where('role', '<>', Permission::ADMIN)
             ->first();
     }
 

@@ -10,19 +10,15 @@
               ankdangvkl
             </a>
             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item"  href="javascript:;"> Profile</a>
-            <a class="dropdown-item"  href="{{ url('/logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+              <a class="dropdown-item"  href="#Detail">Chi tiết</a>
+            <a class="dropdown-item"  href="{{ url('/logout') }}"><i class="fa fa-sign-out pull-right"></i>Đăng xuất</a>
             </div>
           </li>
           <li class="nav-item">
-          <a href="{{ url('/user/package') }}" class="user-profile" aria-haspopup="true" aria-expanded="false">
-                Nạp tiền
-              </a>
+          <a href="{{ url('/user/package') }}" class="user-profile" aria-haspopup="true" aria-expanded="false">Nạp tiền</a>
             </li>
           <li class="nav-item">
-              <a href="javascript:;" class="user-profile" aria-haspopup="true" aria-expanded="false">
-                Số dư: 0
-              </a>
+              <a href="javascript:;" class="user-profile" aria-haspopup="true" aria-expanded="false">Số dư: 0</a>
             </li>
           </ul>
       </nav>

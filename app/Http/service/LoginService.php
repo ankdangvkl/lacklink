@@ -2,9 +2,8 @@
 
 namespace App\Http\service;
 
-use App\Http\common\CookieService;
 use Illuminate\Http\Request;
-
+use App\Http\common\Service\CookieService;
 use App\Http\repositories\LoginRepository;
 use Illuminate\Support\Facades\Log;
 
