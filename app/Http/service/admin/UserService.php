@@ -36,7 +36,7 @@ class UserService extends CookieService
 
     public function addUser($userInfo)
     {
-        $dirPath = public_path(ImmuableVariable::USER_FILE_PATH . '/' . $userInfo['username']);
+        $dirPath = public_path(ImmuableVariable::USER_FILE_PATH . $userInfo['username']);
         $this->handlerUserJsonData($dirPath, $userInfo);
         $userData = $this->generateUserData($userInfo, $dirPath);
         Log::info('//   Generate user data: [' . json_encode($userData) . ']');
@@ -54,20 +54,20 @@ class UserService extends CookieService
         if (!file_exists($dirPath)) {
             \File::makeDirectory($dirPath, 0777, true, true);
         }
-        $dataJsonFilePath = $dirPath . ImmuableVariable::USER_DATA_JSON_FILE;
-        $editPhpFilePath = $dirPath . ImmuableVariable::USER_EDIT_PHP_FILE;
-        $indexPhpFilePath = $dirPath . ImmuableVariable::USER_INDEX_PHP_FILE;
-        $trackingFilePath = $dirPath . ImmuableVariable::USER_TRACKING_FILE;
+        $userInfoJsonFilePath = $dirPath . ImmuableVariable::USER_INFO_JSON_FILE;
+        $userStatisticJsonFilePath = $dirPath . ImmuableVariable::USER_STATISTIC_JSON_FILE;
+        $userIndexFilePath = $dirPath . ImmuableVariable::USER_INDEX_PHP_FILE;
+        $userTrackingFilePath = $dirPath . ImmuableVariable::USER_TRACKING_TXT_FILE;
         $dataJsonFile = json_encode(array("k0"=>"http://fakelink.com"));
-        Log::info('//   Create file path: [' . $dataJsonFilePath . ']');
+        Log::info('//   Create file path: [' . $userInfoJsonFilePath . ']');
         Log::info('//   Data of file: [' . $dataJsonFile . ']');
-        \File::put($dataJsonFilePath, $dataJsonFile);
-        Log::info('//   Create file path: [' . $editPhpFilePath . ']');
-        \File::put($editPhpFilePath, '<?php class edit{}');
-        Log::info('//   Create file path: [' . $indexPhpFilePath . ']');
-        \File::put($indexPhpFilePath, '<?php class index{}');
-        Log::info('//   Create file path: [' . $trackingFilePath . ']');
-        \File::put($trackingFilePath, '');
+        \File::put($userInfoJsonFilePath, $dataJsonFile);
+        Log::info('//   Create file path: [' . $userStatisticJsonFilePath . ']');
+        \File::put($userStatisticJsonFilePath, '{}');
+        Log::info('//   Create file path: [' . $userIndexFilePath . ']');
+        \File::put($userIndexFilePath, '');
+        Log::info('//   Create file path: [' . $userTrackingFilePath . ']');
+        \File::put($userTrackingFilePath, '');
     }
 
     private function generateUserData($userInfo, $dirPath)
@@ -79,9 +79,14 @@ class UserService extends CookieService
             "role"         => ImmuableVariable::USER_ROLE,
             'status'       => ImmuableVariable::STATUS_DEACTIVE,
             'created_date' => date('yy-m-d h:i:s', time()),
-            'created_by'   => 'Admin',
+            'created_by'   => ImmuableVariable::ADMIN_ROLE,
             'updated_date' => date('yy-m-d h:i:s', time()),
-            'updated_by'   => 'Admin'
+            'updated_by'   => ImmuableVariable::ADMIN_ROLE,
         );
+    }
+
+    private function generateUserJsonContent()
+    {
+
     }
 }
