@@ -6,8 +6,8 @@ use Exception;
 use Illuminate\Http\Request;
 
 use App\Http\common\CookieService;
-use App\Http\common\ImmuableVariable;
-use App\Http\common\ProjectUrl;
+use App\Http\common\Constant\ViewPath;
+use App\Http\common\Constant\Url;
 use App\Http\Controllers\Controller;
 use App\Http\service\admin\UserService;
 use Illuminate\Support\Facades\DB;
@@ -33,13 +33,13 @@ class UserController extends Controller
             return redirect('/');
         }
         Log::info('//   Redirect to create-user page');
-        return view(ImmuableVariable::ADMIN_USER_REGIST);
+        return view(ViewPath::ADMIN_USER_REGIST);
     }
 
     public function createUser(Request $request)
     {
         Log::info('//====================================================================//');
-        Log::info('//   URL: ' . url(ImmuableVariable::CREATE_USER_URL));
+        Log::info('//   URL: ' . url(Url::CREATE_USER));
         Log::info('//   Request: ' . $request);
         $userName = $request->input('userName');
         try {
@@ -68,7 +68,7 @@ class UserController extends Controller
     public function detail(Request $request, $id)
     {
         Log::info('//====================================================================//');
-        Log::info('//   URL: ' . url(ImmuableVariable::USER_DETAIL_URL));
+        Log::info('//   URL: ' . url(Url::DETAIL));
         Log::info('//   Request: ' . $request);
         if (!$this->userService->isAdmin($request)) {
             Log::info('//   Isn\'t admin user. Redirect!');
@@ -76,13 +76,13 @@ class UserController extends Controller
         }
         $userDetail = $this->userService->getById($id);
         Log::info('//   Redirect to detail of user [' . $userDetail->name . ']');
-        return view(ImmuableVariable::ADMIN_USER_DETAIL)->with('user', $userDetail);
+        return view(ViewPath::ADMIN_USER_DETAIL)->with('user', $userDetail);
     }
 
     public function updateUserStatus(Request $request, $id)
     {
         Log::info('//====================================================================//');
-        Log::info('//   URL: ' . url(ImmuableVariable::USER_STATUS_UPDATE_URL));
+        Log::info('//   URL: ' . url(Url::STATUS_UPDATE));
         Log::info('//   Request: ' . $request);
         try {
             DB::beginTransaction();

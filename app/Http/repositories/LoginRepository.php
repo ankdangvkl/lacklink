@@ -2,7 +2,7 @@
 
 namespace App\Http\repositories;
 
-use App\Http\common\ImmuableVariable;
+use App\Http\common\Constant\Status;
 
 class LoginRepository
 {
@@ -19,7 +19,7 @@ class LoginRepository
     {
         return \DB::table($table)
             ->where('name', '=', $username)
-            ->where('status', '<>', ImmuableVariable::STATUS_DEACTIVE)
+            ->where('status', '<>', Status::DEACTIVE)
             ->first();
     }
 }

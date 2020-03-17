@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\common;
+namespace App\Http\common\Service;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\common\Constant\CookieInfo;
+use App\Http\common\Constant\Permission;
 
 class CookieService
 {
@@ -54,7 +55,7 @@ class CookieService
     public function isAdmin(Request $request)
     {
         $userCookie = $this->getCookie($request);
-        return ($userCookie != null && $userCookie->role == CookieInfo::ADMIN_ROLE);
+        return ($userCookie != null && $userCookie->role == Permission::ADMIN);
     }
 
     private function generateUserCookieData($user)
