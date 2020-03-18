@@ -56,35 +56,39 @@ class UserService extends CookieService
         return $this->userRepository->updateUserStatus($id);
     }
 
+    public function getUserRemainingClicks($username)
+    {
+      $userInfo = file_get_contents(public_path(FilePath::USER_FILE_PATH . $username . FilePath::USER_INFO_JSON_FILE));
+      $userInfo = json_decode($userInfo);
+      return [
+        'clicks' => $userInfo->clicks
+        ,'payAmount' => $userInfo->amount
+        ];
+    }
+
     private function generateUserDataFile($username)
     {
         $dirPath = public_path(FilePath::USER_FILE_PATH . $username);
         if (!file_exists($dirPath)) {
             \File::makeDirectory($dirPath, 0777, true, true);
 
+            Log::info('//   Create folder user: [' . $username . ']');
             $userInfoFile     = $dirPath . FilePath::USER_INFO_JSON_FILE;
             $userFakeLinkFile = $dirPath . FilePath::USER_FAKE_LINK_JSON_FILE;
-            // $userIndexFile    = $dirPath . FilePath::USER_INDEX_PHP_FILE;
             $userTrackingFile = $dirPath . FilePath::USER_TRACKING_TXT_FILE;
 
             $userInfoFileContent = '{"clicks" : 0,'
                   . '"'. JsonDefault::CLICK_DETAIL .'" : [], "'
                   . JsonDefault::CURRENT_PAY . '" : 0, "payDays" : []}';
-            Log::info('//   Create file: [' . $userInfoFile . ']');
-            Log::info('//   Data of file: [' . $userInfoFileContent . ']');
             \File::put($userInfoFile, $userInfoFileContent);
 
             $userFakeLinkFileContent = '{"links": []}';
-            Log::info('//   Create file: [' . $userFakeLinkFile . ']');
-            Log::info('//   Data of file: [' . $userFakeLinkFileContent . ']');
             \File::put($userFakeLinkFile, $userFakeLinkFileContent);
 
-            Log::info('//   Create [index.php] file.');
             \File::copy(
-              public_path(FilePath::USER_FILE_PATH . 'index.php'),
+              public_path(FilePath::USER_FILE_PATH . FilePath::TEMPLATE_PATH . 'index.php'),
               public_path(FilePath::USER_FILE_PATH . $username . '/index.php')
             );
-            Log::info('//   Create file: [' . $userTrackingFile . ']');
             \File::put($userTrackingFile, '');
         }
     }

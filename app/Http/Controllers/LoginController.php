@@ -44,17 +44,28 @@ class LoginController extends Controller
         $this->user = $this->userService->getUserByName($userCookieInfo->username);
         if ($this->user->status == Status::DEACTIVE)
         {
-          Log::info('//   User deactived!');
+          Log::info('//   User ['. $this->user->name .'] deactived!');
           return view(ViewPath::LOGIN);
         }
         else
         {
           if ($this->loginService->isAdmin($request)) {
-              $this->lstUser = $this->userService->getAll(TablesName::USERS);
+              $lstUsr = [];
               Log::info('//   Logged as admin. Redirect to admin page!');
+              $this->lstUser = $this->userService->getAll(TablesName::USERS);
+              foreach ($this->lstUser as $userKey => $userData) {
+                $userData2 = $this->userService->getUserRemainingClicks($userData->name);
+                $lstUsr[$userKey]['id'] = $userData->id;
+                $lstUsr[$userKey]['name'] = $userData->name;
+                $lstUsr[$userKey]['directory'] = $userData->directory;
+                $lstUsr[$userKey]['role'] = $userData->role;
+                $lstUsr[$userKey]['status'] = $userData->status;
+                $lstUsr[$userKey]['clicks'] = $userData2['clicks'];
+                $lstUsr[$userKey]['payAmount'] = $userData2['payAmount'];
+              }
               Log::info($this->lstUser);
               return view(ViewPath::ADMIN_DASHBOARD_INDEX)
-                  ->with($this->listUser, $this->lstUser);
+                  ->with($this->listUser, $lstUsr);
           }
           Log::info('//   Logged as user: '
             . $this->loginService->getCookie($request)->username

@@ -19,6 +19,7 @@
             <th scope="col">#</th>
             <th scope="col">Account user</th>
             <th scope="col">Số lượt click còn</th>
+            <th scope="col">Thanh toán gần nhất</th>
             <th scope="col">Trạng thái tài khoản</th>
             <th scope="col" style="width: 20%;">Action</th>
           </tr>
@@ -30,27 +31,27 @@
                     <td>Mark</td>
                     <td>Otto</td>
                     <td>@mdo</td>
-                    <td  style="width: 15%;"><a class="btn btn-secondary" href="#">Chi tiết</a><a class="btn btn-info" href="">Active</a><a class="btn btn-danger" href="">Deactive</a></td>
                 </tr>
                 @else
                 @for ($i = 0; $i < count($listUser); $i++)
                 <tr>
-                    <th scope="row">{{ $listUser[$i]->id }}</th>
-                    <td>{{ $listUser[$i]->name }}</td>
-                    <td>Otto</td>
+                    <th scope="row">{{ $listUser[$i]['id'] }}</th>
+                    <td>{{ $listUser[$i]['name'] }}</td>
+                    <td>{{ $listUser[$i]['clicks'] }}</td>
+                    <td>{{ $listUser[$i]['payAmount'] }}</td>
                     <td>
-                    @if($listUser[$i]->status == 1)
+                    @if($listUser[$i]['status'] == 1)
                         <span class="btn btn-info">Active</span>
                     @else
                       <span class="btn btn-danger">Deactive</span>
                     @endif
                     </td>
                     <td style="width: 15%;">
-                        @if($listUser[$i]->status == 0)
-                            <a class="btn btn-info" href="{{ url('user-status-update/' . $listUser[$i]->id) }}">Active</a>
+                        @if($listUser[$i]['status'] == 0)
+                            <a class="btn btn-info" href="{{ url('user-status-update/' . $listUser[$i]['id']) }}">Active</a>
                         @endIf
-                        @if($listUser[$i]->status == 1)
-                            <a class="btn btn-danger" href="{{ url('user-status-update/' . $listUser[$i]->id) }}">Deactive</a>
+                        @if($listUser[$i]['status'] == 1)
+                            <a class="btn btn-danger" href="{{ url('user-status-update/' . $listUser[$i]['id']) }}">Deactive</a>
                         @endIf
                     </td>
                 </tr>

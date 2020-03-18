@@ -5,6 +5,7 @@ namespace App\Http\common\Constant;
 class FilePath
 {
   const USER_FILE_PATH = 'acc/'
+        ,TEMPLATE_PATH = 'template/'
         ,USER_INFO_JSON_FILE = '/info.json'
         ,USER_FAKE_LINK_JSON_FILE = '/fakeLink.json'
         // ,USER_INDEX_PHP_FILE = '/index.php'
