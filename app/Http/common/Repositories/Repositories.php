@@ -4,16 +4,17 @@ namespace App\Http\common;
 
 interface Repositories {
 
-    public function add($table, $userInfo);
+    function add($table, $userInfo);
 
-    public function getAll($table);
+    function delete($table, $id);
 
-    public function getById($table, $id);
+    function updateBy($table, $by);
 
-    public function getBy($table, $by);
+    function getAll($table);
 
-    public function delete($table, $id);
+    function getById($table, $id);
 
-    public function updateBy($table, $by);
+    function getByUserNameAndPassword($table, $userName, $password);
 
+    function getBy($table, $by);
 }
