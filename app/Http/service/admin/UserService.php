@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Log;
 use App\Http\common\Constant\FilePath;
 use App\Http\common\Constant\Permission;
 use App\Http\common\Constant\Status;
-use App\Http\common\Constant\JsonDefault;
-use App\Http\common\Constant\TablesName;
-use App\Http\common\Constant\OperatorCharacter;
 use App\Http\repositories\UserRepository;
 use App\Http\common\Service\CookieService;
 
@@ -42,13 +39,11 @@ class UserService extends CookieService
 
     public function addUser($userInfo)
     {
-      if ($this->getUserByName($userInfo['username']) == null)
-      {
-        $this->generateUserDataFile($userInfo['username']);
-        $userData = $this->generateUserData($userInfo['username'], $userInfo['password']);
-        Log::info('//   Generate user: [' . json_encode($userData) . ']');
+        $dirPath = public_path(FilePath::USER_FILE_PATH . $userInfo['username']);
+        $this->handlerUserJsonData($dirPath, $userInfo);
+        $userData = $this->generateUserData($userInfo, $dirPath);
+        Log::info('//   Generate user data: [' . json_encode($userData) . ']');
         $this->userRepository->addUser('users', $userData);
-      }
     }
 
     public function updateUserStatus($id)
@@ -56,49 +51,38 @@ class UserService extends CookieService
         return $this->userRepository->updateUserStatus($id);
     }
 
-    public function getUserRemainingClicks($username)
+    private function handlerUserJsonData($dirPath, $userInfo)
     {
-      $userInfo = file_get_contents(public_path(FilePath::USER_FILE_PATH . $username . FilePath::USER_INFO_JSON_FILE));
-      $userInfo = json_decode($userInfo);
-      return [
-        'clicks' => $userInfo->clicks
-        ,'payAmount' => $userInfo->amount
-        ];
-    }
+        $filePath = '';
 
-    private function generateUserDataFile($username)
-    {
-        $dirPath = public_path(FilePath::USER_FILE_PATH . $username);
         if (!file_exists($dirPath)) {
             \File::makeDirectory($dirPath, 0777, true, true);
-
-            Log::info('//   Create folder user: [' . $username . ']');
-            $userInfoFile     = $dirPath . FilePath::USER_INFO_JSON_FILE;
-            $userFakeLinkFile = $dirPath . FilePath::USER_FAKE_LINK_JSON_FILE;
-            $userTrackingFile = $dirPath . FilePath::USER_TRACKING_TXT_FILE;
-
-            $userInfoFileContent = '{"clicks" : 0,'
-                  . '"'. JsonDefault::CLICK_DETAIL .'" : [], "'
-                  . JsonDefault::CURRENT_PAY . '" : 0, "payDays" : []}';
-            \File::put($userInfoFile, $userInfoFileContent);
-
-            $userFakeLinkFileContent = '{"links": []}';
-            \File::put($userFakeLinkFile, $userFakeLinkFileContent);
-
-            \File::copy(
-              public_path(FilePath::USER_FILE_PATH . FilePath::TEMPLATE_PATH . 'index.php'),
-              public_path(FilePath::USER_FILE_PATH . $username . '/index.php')
-            );
-            \File::put($userTrackingFile, '');
         }
+
+        $userInfoFile = $dirPath . FilePath::USER_INFO_JSON_FILE;
+        $userFakeLinkFile = $dirPath . FilePath::USER_FAKE_LINK_JSON_FILE;
+        $userIndexFile = $dirPath . FilePath::USER_INDEX_PHP_FILE;
+        $userTrackingFile = $dirPath . FilePath::USER_TRACKING_TXT_FILE;
+
+        $dataJsonFile = json_encode(array("k0"=>"http://fakelink.com"));
+
+        Log::info('//   Create file path: [' . $userInfoFile . ']');
+        Log::info('//   Data of file: [' . $dataJsonFile . ']');
+        \File::put($userInfoFile, $dataJsonFile);
+        Log::info('//   Create file path: [' . $userFakeLinkFile . ']');
+        \File::put($userFakeLinkFile, '{}');
+        Log::info('//   Create file path: [' . $userIndexFile . ']');
+        \File::put($userIndexFile, '');
+        Log::info('//   Create file path: [' . $userTrackingFile . ']');
+        \File::put($userTrackingFile, '');
     }
 
-    private function generateUserData($username, $password)
+    private function generateUserData($userInfo, $dirPath)
     {
         return array(
-            'name'         => $username,
-            "password"     => $password,
-            "directory"    => $username,
+            'name'         => $userInfo['username'],
+            "password"     => $userInfo['password'],
+            "directory"    => $dirPath,
             "role"         => Permission::USER,
             'status'       => Status::DEACTIVE,
             'created_date' => date('yy-m-d h:i:s', time()),
@@ -106,5 +90,10 @@ class UserService extends CookieService
             'updated_date' => date('yy-m-d h:i:s', time()),
             'updated_by'   => Permission::ADMIN,
         );
+    }
+
+    private function generateUserJsonContent()
+    {
+
     }
 }

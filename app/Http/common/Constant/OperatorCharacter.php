@@ -10,11 +10,5 @@ class OperatorCharacter
   const SPLASH = '/'
         ,EQUAL = '='
         ,SPACE = ' '
-        ,NOT_EQUAL_SQL = '<>'
-        ,SINGLE_QUOTE = "'"
-        ,BEGIN_BLOCK = '{'
-        ,END_BLOCK = '}'
-        ,EMPTY_BLOCK = '{}'
-        ,DOUBLE_QUOTE = '"'
-        ,EMPTY_STRING = '';
+        ,NOT_EQUAL_SQL = '<>';
 }

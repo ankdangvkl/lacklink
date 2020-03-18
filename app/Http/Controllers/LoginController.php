@@ -11,7 +11,6 @@ use App\Http\service\admin\UserService;
 use App\Http\common\Constant\Url;
 use App\Http\common\Constant\TablesName;
 use App\Http\common\Constant\ViewPath;
-use App\Http\common\Constant\Status;
 use App\Http\common\Constant\Permission;
 use Illuminate\Support\Facades\Log;
 
@@ -36,44 +35,22 @@ class LoginController extends Controller
         Log::info('//====================================================================//');
         Log::info('//   URL: ' . url(Url::INDEX));
         Log::info('//   Request: ' . $request);
-        $userCookieInfo = $this->loginService->getCookie($request);
-        if ($userCookieInfo == null) {
+        if ($this->loginService->getCookie($request) == null) {
             Log::info('//   Not yet logging! Redirect to login page!');
             return view(ViewPath::LOGIN);
+        } else {
+            if ($this->loginService->isAdmin($request)) {
+                $this->lstUser = $this->userService->getAll(TablesName::USERS);
+                Log::info('//   Logged as admin. Redirect to admin page!');
+                Log::info('//   Gett all user for admin page.');
+                Log::info($this->lstUser);
+                return view(ViewPath::ADMIN_DASHBOARD_INDEX)
+                    ->with($this->listUser, $this->lstUser);
+            }
+            Log::info('//   Logged as user: ' . $this->loginService->getCookie($request)->username . '. Redirect to user page!');
+            return view(ViewPath::USER_DASHBOARD_INDEX);
         }
-        $this->user = $this->userService->getUserByName($userCookieInfo->username);
-        if ($this->user->status == Status::DEACTIVE)
-        {
-          Log::info('//   User ['. $this->user->name .'] deactived!');
-          return view(ViewPath::LOGIN);
-        }
-        else
-        {
-          if ($this->loginService->isAdmin($request)) {
-              $lstUsr = [];
-              Log::info('//   Logged as admin. Redirect to admin page!');
-              $this->lstUser = $this->userService->getAll(TablesName::USERS);
-              foreach ($this->lstUser as $userKey => $userData) {
-                $userData2 = $this->userService->getUserRemainingClicks($userData->name);
-                $lstUsr[$userKey]['id'] = $userData->id;
-                $lstUsr[$userKey]['name'] = $userData->name;
-                $lstUsr[$userKey]['directory'] = $userData->directory;
-                $lstUsr[$userKey]['role'] = $userData->role;
-                $lstUsr[$userKey]['status'] = $userData->status;
-                $lstUsr[$userKey]['clicks'] = $userData2['clicks'];
-                $lstUsr[$userKey]['payAmount'] = $userData2['payAmount'];
-              }
-              Log::info($this->lstUser);
-              return view(ViewPath::ADMIN_DASHBOARD_INDEX)
-                  ->with($this->listUser, $lstUsr);
-          }
-          Log::info('//   Logged as user: '
-            . $this->loginService->getCookie($request)->username
-            . '. Redirect to user page!');
-            // TO-DO get user data include number of click remaining, fake  link, payment.
-          return view(ViewPath::USER_DASHBOARD_INDEX);
-        }
-      }
+    }
 
     public function login(Request $request)
     {
@@ -82,16 +59,15 @@ class LoginController extends Controller
         Log::info('//   Request: ' . $request);
         $this->user = $this->loginService->getUserByName($request);
         if ($this->user == null) {
-            Log::info(
-              '//   Username: [' . $request->input('userName') . '] not found. '
-              . 'Show message: [' . Message::ERR_LOGIN . ']'
-            );
+            Log::info('//   Username: [' . $request->input('userName') . '] not found.');
+            Log::info('//   Show message: [' . Message::ERR_LOGIN . ']');
             return view(ViewPath::LOGIN)->with('error', Message::ERR_LOGIN);
         }
         $this->loginService->setCookie($request, $this->user);
         if ($this->user->role == Permission::ADMIN) {
             $this->lstUser = $this->userService->getAll(TablesName::USERS);
             Log::info('//   User logging is admin. Redirect to admin page!');
+            Log::info('//   Get all user for admin page!');
             Log::info($this->lstUser);
             return view(ViewPath::ADMIN_DASHBOARD_INDEX)
                 ->with(
