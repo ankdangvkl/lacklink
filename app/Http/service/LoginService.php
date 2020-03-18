@@ -16,6 +16,11 @@ class LoginService extends CookieService
         $this->loginRepository = $loginRepository;
     }
 
+    public function getUserStatusByName()
+    {
+      
+    }
+
     public function getUserByName(Request $request)
     {
         $user = $this->loginRepository->getUserByName('users', $request->input('userName'));

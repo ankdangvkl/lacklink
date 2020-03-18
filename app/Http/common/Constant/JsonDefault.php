@@ -7,8 +7,7 @@ namespace App\Http\common\Constant;
  */
 class JsonDefault
 {
-  const EMPTY_BLOCK = '{}'
-        ,CURRENT_NUMBER_CLICK = 'clicks'
+  const CURRENT_NUMBER_CLICK = 'clicks'
         ,CLICK_DETAIL = 'clickDays'
         ,PAY_DETAIL = 'payDays'
         ,CURRENT_PAY = "amount"
