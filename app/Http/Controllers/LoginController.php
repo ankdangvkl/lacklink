@@ -45,7 +45,9 @@ class LoginController extends Controller
               . $this->loginService->getCookie($request)->username
               . '. Redirect to user page!'
             );
-            return view(ViewPath::USER_DASHBOARD_INDEX);
+            $data = $this->userService->getUserJsonData($request->input('userName'));
+            $data['username'] = $request->input('userName');
+            return view(ViewPath::USER_DASHBOARD_INDEX)->with('data', $data);
           }
           $this->lstUser = $this->userService->getAll(TablesName::USERS);
           Log::info('//   Logged as admin. Redirect to admin page! Gett all user for admin page.');
@@ -79,7 +81,9 @@ class LoginController extends Controller
                     $lstUserJsonData
                 );
         }
-        return view(ViewPath::USER_DASHBOARD_INDEX);
+        $data = $this->userService->getUserJsonData($request->input('userName'));
+        $data['username'] = $request->input('userName');
+        return view(ViewPath::USER_DASHBOARD_INDEX)->with('data', $data);
     }
 
     public function logout(Request $request)

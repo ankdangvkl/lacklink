@@ -6,7 +6,7 @@
     <div class="col-md-12 col-sm-12 x_title dashboard_graph">
         <div class="row ">
             <div class="col-md-6">
-                <h3>Top tên miền</h3>
+                <h3>Tên miền</h3>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -18,29 +18,17 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Account user</th>
-            <th scope="col">Số lượt click còn</th>
-            <th scope="col">Trạng thái tài khoản</th>\
+            <th scope="col">Fake link</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+            <td>{{ $data['clicks'] }}</td>
+            <td>{{ $data['clicks'] }}</td>
+            <td>{{ $data['payAmount'] }}</td>
+            <td>{{ $data['payAmount'] }}</td>
           </tr>
         </tbody>
       </table>

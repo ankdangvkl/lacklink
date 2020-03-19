@@ -45,7 +45,6 @@ class UserService extends CookieService
         Log::info('//   Generate user data: [' . json_encode($userData) . ']');
         $this->userRepository->addUser('users', $userData);
       }
-
     }
 
     public function updateUserStatus($id)
