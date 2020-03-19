@@ -25,7 +25,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         Log::info('//====================================================================//');
-        Log::info('//   URL: ' . url(ProjectUrl::CREATE_USER));
+        Log::info('//   URL: ' . url(Url::CREATE_USER));
         Log::info('//   Request: ' . $request);
         if (!$this->userService->isAdmin($request)) {
             Log::info('//   Normal user trying access to admin page.');
@@ -52,16 +52,16 @@ class UserController extends Controller
                     'password' => $request->input('password')
                 ]);
                 DB::commit();
-                return redirect()->back()->with('success', 'Create user success!');
+                return redirect('/')->with('success', 'Create user success!');
             }
             Log::info('//   The user :[' . $userName . '] are existed.');
             Log::info('//   Rediect back');
-            return redirect()->back();
+            return redirect('/');
         } catch (Exception $ex) {
             Log::error('//   Create user exsit an exception');
             Log::error('//   Exception: [' . $ex . ']');
             DB::rollback();
-            return redirect()->back()->with('error', 'Creating user failed! Please try again!');
+            return redirect('/')->with('error', 'Creating user failed! Please try again!');
         }
     }
 

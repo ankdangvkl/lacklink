@@ -38,18 +38,21 @@ class LoginController extends Controller
         if ($this->loginService->getCookie($request) == null) {
             Log::info('//   Not yet logging! Redirect to login page!');
             return view(ViewPath::LOGIN);
-        } else {
-            if ($this->loginService->isAdmin($request)) {
-                $this->lstUser = $this->userService->getAll(TablesName::USERS);
-                Log::info('//   Logged as admin. Redirect to admin page!');
-                Log::info('//   Gett all user for admin page.');
-                Log::info($this->lstUser);
-                return view(ViewPath::ADMIN_DASHBOARD_INDEX)
-                    ->with($this->listUser, $this->lstUser);
-            }
-            Log::info('//   Logged as user: ' . $this->loginService->getCookie($request)->username . '. Redirect to user page!');
-            return view(ViewPath::USER_DASHBOARD_INDEX);
         }
+        if (!$this->loginService->isAdmin($request)) {
+            Log::info(
+              '//   Logged as user: '
+              . $this->loginService->getCookie($request)->username
+              . '. Redirect to user page!'
+            );
+            return view(ViewPath::USER_DASHBOARD_INDEX);
+          }
+          $this->lstUser = $this->userService->getAll(TablesName::USERS);
+          Log::info('//   Logged as admin. Redirect to admin page! Gett all user for admin page.');
+          Log::info($this->lstUser);
+          $lstUserJsonData = $lstUserJsonData = $this->handleUserDataResponse($this->lstUser);
+          return view(ViewPath::ADMIN_DASHBOARD_INDEX)
+              ->with($this->listUser, $lstUserJsonData);
     }
 
     public function login(Request $request)
@@ -69,10 +72,11 @@ class LoginController extends Controller
             Log::info('//   User logging is admin. Redirect to admin page!');
             Log::info('//   Get all user for admin page!');
             Log::info($this->lstUser);
+            $lstUserJsonData = $this->handleUserDataResponse($this->lstUser);
             return view(ViewPath::ADMIN_DASHBOARD_INDEX)
                 ->with(
                     $this->listUser,
-                    $this->lstUser
+                    $lstUserJsonData
                 );
         }
         return view(ViewPath::USER_DASHBOARD_INDEX);
@@ -88,5 +92,21 @@ class LoginController extends Controller
             $this->loginService->forgetCookie($request);
         }
         return redirect(Url::INDEX);
+    }
+
+    private function handleUserDataResponse($userList)
+    {
+      $lstUserJsonData = [];
+      foreach ($this->lstUser as $key => $value) {
+        $jsonData = $this->userService->getUserJsonData($value->name);
+        $lstUserJsonData[$key]['id'] = $value->id;
+        $lstUserJsonData[$key]['name'] = $value->name;
+        $lstUserJsonData[$key]['directory'] = $value->directory;
+        $lstUserJsonData[$key]['role'] = $value->role;
+        $lstUserJsonData[$key]['status'] = $value->status;
+        $lstUserJsonData[$key]['clicks'] = $jsonData['clicks'];
+        $lstUserJsonData[$key]['payAmount'] = $jsonData['payAmount'];
+      }
+      return $lstUserJsonData;
     }
 }
