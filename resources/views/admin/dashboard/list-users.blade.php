@@ -17,10 +17,14 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Account user</th>
-            <th scope="col">Số lượt click còn</th>
-            <th scope="col">Thanh toán gần nhất</th>
-            <th scope="col">Trạng thái tài khoản</th>
+            <th scope="col">Tên tài khoản</th>
+            <th scope="col">Tên người dùng</th>
+            <th scope="col">Email</th>
+            <th scope="col">Tổng click</th>
+            <th scope="col">Số dư</th>
+            <th scope="col">Ngày thanh toán</th>
+            <th scope="col">Số tiền</th>
+            <th scope="col">Trạng thái</th>
             <th scope="col" style="width: 20%;">Action</th>
           </tr>
         </thead>
@@ -39,6 +43,10 @@
                     <td>{{ $listUser[$i]['name'] }}</td>
                     <td>{{ $listUser[$i]['clicks'] }}</td>
                     <td>{{ $listUser[$i]['payAmount'] }}</td>
+                    <td>{{ $listUser[$i]['clicks'] }}</td>
+                    <td>{{ $listUser[$i]['clicks'] }}</td>
+                    <td>{{ $listUser[$i]['payAmount'] }}</td>
+                    <td>{{ $listUser[$i]['clicks'] }}</td>
                     <td>
                     @if($listUser[$i]['status'] == 1)
                         <span class="btn btn-info">Active</span>
