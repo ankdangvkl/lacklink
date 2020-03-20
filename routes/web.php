@@ -25,3 +25,4 @@ Route::get('/domain', 'User\DomainController@index');
 Route::get('/package', 'User\PackageController@index');
 Route::get('/campaign', 'User\CampaignController@index');
 Route::get('/instruction', 'User\InstructionController@index');
+Route::get('/payment', 'User\PaymentController@index');

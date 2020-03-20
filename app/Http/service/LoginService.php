@@ -18,7 +18,7 @@ class LoginService extends CookieService
 
     public function getUserByName(Request $request)
     {
-        $user = $this->loginRepository->getUserByName('users', $request->input('userName'));
+        $user = $this->loginRepository->getUserByName('users', $request->input('name'));
         if ($user == null || !$this->validUser($request->input('password'), $user)) {
             return null;
         }
@@ -29,7 +29,7 @@ class LoginService extends CookieService
     {
         if ($requestPassword != $user->password) {
             Log::info('//====================================================================//');
-            Log::info('//   Username and password not match together');
+            Log::info('//   username and password not match together');
             Log::info('//   Input password: [' . $requestPassword . '], password from database: [' . $user->password . ']');
             return false;
         }

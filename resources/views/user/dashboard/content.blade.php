@@ -19,17 +19,23 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Fake link</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col">Actions</th>
+            {{-- <th scope="col">Trạng thái</th> --}}
+            {{-- <th scope="col">Actions</th> --}}
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{ $data['clicks'] }}</td>
-            <td>{{ $data['clicks'] }}</td>
-            <td>{{ $data['payAmount'] }}</td>
-            <td>{{ $data['payAmount'] }}</td>
-          </tr>
+            @if($data != null)
+            @if($data['fakeLinks'] != null)
+                @foreach ($data['fakeLinks'] as $key => $value)
+                @foreach ($value as $key => $value)
+                    <tr>
+                    <td>{{ $key }}</td>
+                    <td>{{ $value }}</td>
+                    </tr>
+                @endforeach
+                @endforeach
+            @endIf
+            @endIf
         </tbody>
       </table>
     </div>

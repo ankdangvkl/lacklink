@@ -4,7 +4,7 @@ namespace App\Http\model;
 
 class UserEntity {
     private $id;
-    private $userName;
+    private $username;
     private $password;
     private $dataUrl;
     private $active;
@@ -23,12 +23,12 @@ class UserEntity {
         return $this->id;
     }
 
-    public function setUserName($userName) {
-        $this->userName = $userName;
+    public function setusername($username) {
+        $this->username = $username;
     }
 
-    public function getUserName() {
-        return $this->userName;
+    public function getusername() {
+        return $this->username;
     }
 
     public function setPassword($password) {

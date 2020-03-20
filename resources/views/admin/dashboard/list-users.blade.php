@@ -19,51 +19,55 @@
             <th scope="col">#</th>
             <th scope="col">Tên tài khoản</th>
             <th scope="col">Tên người dùng</th>
-            <th scope="col">Email</th>
+            <th scope="col" width="400px;">Liên kết đến Facebook</th>
             <th scope="col">Tổng click</th>
             <th scope="col">Số dư</th>
-            <th scope="col">Ngày thanh toán</th>
-            <th scope="col">Số tiền</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col" style="width: 20%;">Action</th>
+            <th scope="col">Thanh toán gần nhất</th>
+            <th scope="col">Tổng thanh toán</th>
+            <th scope="col">Trạng thái hiện tại</th>
+            <th scope="col" style="width: 7%;">Action</th>
           </tr>
         </thead>
         <tbody>
                 @if($listUser == null)
                 <tr>
                     <th scope="row"></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td scope="row"></td>
+                    <td scope="row"></td>
+                    <td scope="row" style="width: 7%;"></td>
                 </tr>
                 @else
-                @for ($i = 0; $i < count($listUser); $i++)
+                @foreach ($listUser as $user)
                 <tr>
-                    <th scope="row">{{ $listUser[$i]['id'] }}</th>
-                    <td>{{ $listUser[$i]['name'] }}</td>
-                    <td>{{ $listUser[$i]['clicks'] }}</td>
-                    <td>{{ $listUser[$i]['payAmount'] }}</td>
-                    <td>{{ $listUser[$i]['clicks'] }}</td>
-                    <td>{{ $listUser[$i]['clicks'] }}</td>
-                    <td>{{ $listUser[$i]['payAmount'] }}</td>
-                    <td>{{ $listUser[$i]['clicks'] }}</td>
-                    <td>
-                    @if($listUser[$i]['status'] == 1)
-                        <span class="btn btn-info">Active</span>
+                    <th scope="row">{{ $user['id'] }}</th>
+                    <td scope="row">{{ $user['name'] }}</td>
+                    <td scope="row">{{ $user['username'] }}</td>
+                    <td scope="row" width="400px;">{{ $user['address'] }}</td>
+                    <td scope="row">{{ $user['clicks'] }}</td>
+                    <td scope="row">{{ $user['payAmount'] }}</td>
+                    <td scope="row">{{ $user['latestPayDay'] }}</td>
+                    <td scope="row">{{ $user['totalPay'] }}</td>
+                    <td scope="row">
+                    @if($user['status'] == 1)
+                        <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Kích hoạt</span>
                     @else
-                      <span class="btn btn-danger">Deactive</span>
+                      <span class="red" style="border: 1px solid #E74C3C;border-radius: 5px; padding: 5px;">Vô hiệu hoá</span>
                     @endif
                     </td>
-                    <td style="width: 15%;">
-                        @if($listUser[$i]['status'] == 0)
-                            <a class="btn btn-info" href="{{ url('user-status-update/' . $listUser[$i]['id']) }}">Active</a>
+                    <td scope="row" style="width: 7%;">
+                        @if($user['status'] == 0)
+                            <a href="{{ url('user-status-update/' . $user['id']) }}">
+                                <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Kích hoạt</span>
+                            </a>
                         @endIf
-                        @if($listUser[$i]['status'] == 1)
-                            <a class="btn btn-danger" href="{{ url('user-status-update/' . $listUser[$i]['id']) }}">Deactive</a>
+                        @if($user['status'] == 1)
+                            <a href="{{ url('user-status-update/' . $user['id']) }}">
+                                <span class="red" style="border: 1px solid #E74C3C;border-radius: 5px; padding: 5px;">Vô hiệu hoá</span>
+                            </a>
                         @endIf
                     </td>
                 </tr>
-                @endfor
+                @endforeach
                 @endIf
         </tbody>
       </table>

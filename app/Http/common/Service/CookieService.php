@@ -18,10 +18,8 @@ class CookieService
 
     public function getCookie(Request $request)
     {
-        Log::info('//====================================================================//');
-        Log::info('//   Get cookie!');
         $this->userCookie = $request->cookie(CookieInfo::NAME);
-        return $this->userCookie != null ? json_decode($this->userCookie) : $this->userCookie;
+        return $this->userCookie != null ? json_decode($this->userCookie) : null;
     }
 
     public function setCookie(Request $request, $userInfo)
@@ -29,7 +27,6 @@ class CookieService
 
         if ($this->getCookie($request) == null) {
             $cookieData = $this->generateUserCookieData($userInfo);
-            Log::info('//====================================================================//');
             Log::info('//   Cookie is not exists!');
             Log::info('//   Create cookie!');
             Log::info('//   Cookie name: ' . CookieInfo::NAME);
@@ -46,7 +43,6 @@ class CookieService
     public function forgetCookie(Request $request)
     {
         if ($this->getCookie($request) != null) {
-            Log::info('//====================================================================//');
             Log::info('//   Remove cookie: ' . CookieInfo::NAME);
             \Cookie::queue(\Cookie::forget(CookieInfo::NAME));
         }
@@ -60,8 +56,8 @@ class CookieService
 
     private function generateUserCookieData($user)
     {
-        return '{"username":' . '"' . $user->name   . '",'
-                . '"role":'   . '"' . $user->role   . '",'
-                . '"status":' . '"' . $user->status . '"}';
+        return '{"name":' . '"' . $user->name   . '",'
+            . '"role":'   . '"' . $user->role   . '",'
+            . '"status":' . '"' . $user->status . '"}';
     }
 }

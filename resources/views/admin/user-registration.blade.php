@@ -13,11 +13,13 @@
     <body>
         <div class="login-dark">
             <form action="{{ url('/create-user') }}" method="post">
-                <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-                <div class="form-group"><input class="form-control" type="text" name="userName" placeholder="Username"></div>
-                <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-                <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Regist</button></div>
-                @csrf
+              @csrf
+                {{-- <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div> --}}
+                <div class="form-group"><input class="form-control" type="text" name="username" placeholder="Tên người dùng"></div>
+                <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Tài khoản người dùng"></div>
+                <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Mật khẩu"></div>
+                <div class="form-group"><input class="form-control" type="text" name="address" placeholder="Liên kết Facebook"></div>
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Đăng ký</button></div>
             </form>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -39,12 +39,12 @@ class UserService extends CookieService
 
     public function addUser($userInfo)
     {
-      if ($this->getUserByName($userInfo['username']) == null) {
-        $this->handlerUserJsonData($userInfo);
-        $userData = $this->generateUserData($userInfo);
-        Log::info('//   Generate user data: [' . json_encode($userData) . ']');
-        $this->userRepository->addUser('users', $userData);
-      }
+        if ($this->getUserByName($userInfo['userAccount']) == null) {
+            $this->handlerUserJsonData($userInfo);
+            $userData = $this->generateUserData($userInfo);
+            Log::info('//   Generate user data: [' . json_encode($userData) . ']');
+            $this->userRepository->addUser('users', $userData);
+        }
     }
 
     public function updateUserStatus($id)
@@ -54,18 +54,45 @@ class UserService extends CookieService
 
     public function getUserJsonData($username)
     {
-      $userInfo = \file_get_contents(public_path(FilePath::USER_FILE_PATH . $username . FilePath::USER_INFO_JSON_FILE));
-      $userInfo = json_decode($userInfo);
-      return [
-        'clicks'  => $userInfo->clicks
-        ,'payAmount' => $userInfo->amount
-      ];
+        $userInfo = \file_get_contents(
+            public_path(FilePath::USER_FILE_PATH
+                . $username
+                . FilePath::USER_INFO_JSON_FILE)
+        );
+        $userInfo = json_decode($userInfo);
+        $totalPay = 0;
+        $latestPayDay = '';
+        foreach ($userInfo->payDays as $pay => $value) {
+            $latestPayDay = $pay;
+            $totalPay += $value;
 
+        }
+        return [
+            'clicks'  => $userInfo->clicks, 'payAmount' => $userInfo->amount, 'totalPay' => $totalPay, 'latestPayDay' => $latestPayDay
+        ];
+    }
+
+    public function getUsersLinks($username)
+    {
+        $fakeLinks = \file_get_contents(
+            public_path(FilePath::USER_FILE_PATH
+                . $username
+                . FilePath::USER_FAKE_LINK_JSON_FILE)
+        );
+        $fakeLinks = json_decode($fakeLinks);
+        $data = [];
+        foreach ($fakeLinks as $pay => $value) {
+            $data[$pay] = $value;
+
+        }
+        return [
+            'fakeLinks' => $data
+        ];
     }
 
     private function handlerUserJsonData($userInfo)
     {
-      $dirPath = public_path(FilePath::USER_FILE_PATH . $userInfo['username']);
+        $dirPath = public_path(FilePath::USER_FILE_PATH . $userInfo['userAccount']);
         if (!file_exists($dirPath)) {
             \File::makeDirectory($dirPath, 0777, true, true);
             $userInfoFile     = $dirPath . FilePath::USER_INFO_JSON_FILE;
@@ -77,10 +104,10 @@ class UserService extends CookieService
             \File::put($userFakeLinkFile, '{}');
             Log::info('//   Create file [ index.php ]');
             \File::copy(
-              public_path(FilePath::USER_FILE_PATH . FilePath::TEMPLATE_PATH . FilePath::USER_INDEX_PHP_FILE),
-              public_path(FilePath::USER_FILE_PATH . $userInfo['username'] . FilePath::USER_INDEX_PHP_FILE)
+                public_path(FilePath::USER_FILE_PATH . FilePath::TEMPLATE_PATH . FilePath::USER_INDEX_PHP_FILE),
+                public_path(FilePath::USER_FILE_PATH . $userInfo['userAccount'] . FilePath::USER_INDEX_PHP_FILE)
             );
-            Log::info('//   Create file [' . $userTrackingFile . ']') ;
+            Log::info('//   Create file [' . $userTrackingFile . ']');
             \File::put($userTrackingFile, '');
         }
     }
@@ -88,9 +115,11 @@ class UserService extends CookieService
     private function generateUserData($userInfo)
     {
         return array(
-            'name'         => $userInfo['username'],
+            'user_name'    => $userInfo['username'],
+            'name'         => $userInfo['userAccount'],
             "password"     => $userInfo['password'],
-            "directory"    => $userInfo['username'] . '/',
+            "address"      => $userInfo['address'],
+            "directory"    => $userInfo['userAccount'] . '/',
             "role"         => Permission::USER,
             'status'       => Status::DEACTIVE,
             'created_date' => date('yy-m-d h:i:s', time()),

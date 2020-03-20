@@ -12,11 +12,11 @@ class UserSessionInfo
     {
     }
 
-    public function setUsername($username)
+    public function setusername($username)
     {
         $this->username = $username;
     }
-    public function getUsername()
+    public function getusername()
     {
         return $this->username;
     }
