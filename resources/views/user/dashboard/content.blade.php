@@ -19,24 +19,29 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Fake link</th>
-            <th scope="col" style="width: 7%;">Trạng thái</th>
-            <th scope="col" style="width: 7%;">Actions</th>
+            {{-- <th scope="col" style="width: 7%;">Trạng thái</th> --}}
+            {{-- <th scope="col" style="width: 10%;">Actions</th> --}}
+            <th scope="col" style="width: 10%;"></th>
           </tr>
         </thead>
         <tbody>
             @if($data != null)
             @if($data['fakeLinks'] != null)
+                @php $i = 1 @endphp
                 @foreach ($data['fakeLinks'] as $key => $value)
                 @foreach ($value as $key => $value)
                     <tr>
-                    <td scope="col">{{ $key }}</td>
+                    <td scope="col">{{ $i++ }}</td>
                     <td scope="col">{{ $value }}</td>
-                    <td scope="col" style="width: 7%;">
+                    {{-- <td scope="col" style="width: 7%;">
                         <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Kích hoạt</span>
-                    </td>
-                    <td scope="col" style="width: 7%;">
-                        <a href="#">
-                            <span class="red" style="border: 1px solid #E74C3C;border-radius: 5px; padding: 5px;">Vô hiệu hoá</span>
+                    </td> --}}
+                    <td scope="col" style="width: 10%;">
+                        <a href="{{ url('/link-edit/' . $data['name'] . '/' . $key)}}">
+                            <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Chỉnh sửa</span>
+                        </a>
+                        <a href="{{ url('/link-remove/' . $data['name'] . '/' . $key)}}">
+                            <span class="red" style="border: 1px solid #E74C3C;border-radius: 5px; padding: 5px;">Xoá</span>
                         </a>
                     </td>
                     </tr>

@@ -10,10 +10,10 @@ interface Repositories {
 
     public function getById($table, $id);
 
-    public function getBy($table, $by);
+    public function getByUserAccount($table, $name);
+
+    public function getByUserName($table, $username);
 
     public function delete($table, $id);
-
-    public function updateBy($table, $by);
 
 }

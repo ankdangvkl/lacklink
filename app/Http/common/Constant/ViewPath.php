@@ -14,5 +14,6 @@ class ViewPath
         ,ADMIN_USER_REGIST = 'admin/user-registration'
         ,ADMIN_USER_DETAIL = '/admin/user-detail'
         // user view file path
-        ,USER_DASHBOARD_INDEX = 'user/dashboard/index';
+        ,USER_DASHBOARD_INDEX = 'user/dashboard/index'
+        ,USER_ADD_lINK = 'user/dashboard/link/add';
 }

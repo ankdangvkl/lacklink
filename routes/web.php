@@ -26,3 +26,9 @@ Route::get('/package', 'User\PackageController@index');
 Route::get('/campaign', 'User\CampaignController@index');
 Route::get('/instruction', 'User\InstructionController@index');
 Route::get('/payment', 'User\PaymentController@index');
+
+Route::get('/link-add/{name}', 'User\LinkController@showAddLinkForm');
+Route::post('/link-add', 'User\LinkController@addLinkForm');
+Route::get('/link-edit/{name}', 'User\LinkController@showEditLinkForm');
+Route::post('/link-edit', 'User\LinkController@showEditLinkForm');
+Route::get('/link-remove/{name}/{id}', 'User\LinkController@remove');

@@ -3,12 +3,12 @@
         <nav class="nav navbar-nav">
             <ul class="navbar-right">
                 <li class="nav-item">
-                    <a href="{{ url('/logout') }}" class="dropdown-item">
+                    <a href="{{ url('/logout') }}" class="dropdown-item grey">
                         <span>Đăng xuất</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/create-user') }}" class="dropdown-item">
+                    <a href="{{ url('/create-user') }}" class="dropdown-item green">
                         <span>Tạo mới người dùng</span>
                     </a>
                 </li>
