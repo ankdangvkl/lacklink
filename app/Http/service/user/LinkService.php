@@ -32,9 +32,10 @@ class LinkService
     {
     }
 
-    public function getLinkByLinkId($userAccount, $linkId)
+    public function getLinkContentByLinkId($userAccount, $linkId)
     {
-
+        $listFakeLink = $this->getUserListFakeLink($userAccount);
+        return $listFakeLink[$linkId];
     }
 
     public function remove($userAccount, $linkId)

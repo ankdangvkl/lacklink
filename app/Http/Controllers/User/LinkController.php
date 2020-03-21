@@ -43,7 +43,11 @@ class LinkController extends Controller
 
     public function showEditLinkForm($userAccount, $linkId)
     {
-        // return view()->with('','');
+        return view(ViewPath::USER_EDIT_lINK, [
+            'linkContent' => $this->linkService->getLinkContentByLinkId($userAccount, $linkId),
+            'userAccount' => $userAccount,
+            'linkId' => $linkId
+        ]);
     }
 
     public function editLinkForm($userAccount, $linkId)

@@ -29,6 +29,6 @@ Route::get('/payment', 'User\PaymentController@index');
 
 Route::get('/link-add/{name}', 'User\LinkController@showAddLinkForm');
 Route::post('/link-add', 'User\LinkController@addLinkForm');
-Route::get('/link-edit/{name}', 'User\LinkController@showEditLinkForm');
-Route::post('/link-edit', 'User\LinkController@showEditLinkForm');
+Route::get('/link-edit/{name}/{id}', 'User\LinkController@showEditLinkForm');
+Route::post('/link-edit', 'User\LinkController@editLinkForm');
 Route::get('/link-remove/{name}/{id}', 'User\LinkController@remove');

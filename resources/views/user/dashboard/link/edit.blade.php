@@ -14,8 +14,11 @@
         <div class="login-dark">
             <form action="{{ url('/create-user') }}" method="post">
               @csrf
-                <div class="form-group"><input class="form-control" type="text" name="link" placeholder="Fakelink"></div>
-                <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Cập nhật</button></div>
+            <div class="form-group"><input class="form-control" type="text" name="link" value="{{ $linkContent }}"/></div>
+                <input type="hidden" name="userAccount" value="{{ $userAccount }}"/>
+                <input type="hidden" name="linkId" value="{{ $linkId }}"/>blade
+                <a href="{{ url()->previous() }}" class="btn btn-primary btn-block" type="submit">Back</a>
+                <button class="btn btn-primary btn-block" type="submit">Cập nhật</button>
             </form>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
