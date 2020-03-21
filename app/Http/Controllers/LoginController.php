@@ -42,15 +42,13 @@ class LoginController extends Controller
             return view(ViewPath::LOGIN);
         }
         if ($userDataCookie->role == Permission::USER) {
-            Log::info(
-                '//   Logged as user ['
-                    . $this->loginService->getCookie($request)->name
-                    . ']. Redirect to user page!'
-            );
-            $data = $this->userService->getUserJsonData($request->name);
-            $fakeLinks = $this->userService->getUsersLinks($request->name);
-            $data['name'] = $request->input('name');
+            Log::info('//   Logged as user [' . $userDataCookie->name . ']. Redirect to user page!');
+            $data = $this->userService->getUserJsonData($userDataCookie->name);
+            $fakeLinks = $this->userService->getUsersLinks($userDataCookie->name);
+            $data['name'] = $userDataCookie->name;
             $data['fakeLinks'] = $fakeLinks;
+            $data['payAmount'] = number_format($data['payAmount']);
+            $data['totalPay'] = number_format($data['totalPay']);
             return view(ViewPath::USER_DASHBOARD_INDEX)->with('data', $data);
         }
         $this->lstUser = $this->userService->getAll(TablesName::USERS);
@@ -86,8 +84,10 @@ class LoginController extends Controller
         }
         $data = $this->userService->getUserJsonData($request->name);
         $fakeLinks = $this->userService->getUsersLinks($request->name);
-        $data['name'] = $request->input('name');
+        $data['name'] = $request->name;
         $data['fakeLinks'] = $fakeLinks;
+        $data['payAmount'] = number_format($data['payAmount']);
+        $data['totalPay'] = number_format($data['totalPay']);
         return view(ViewPath::USER_DASHBOARD_INDEX)->with('data', $data);
     }
 
@@ -116,8 +116,8 @@ class LoginController extends Controller
             $lstUserJsonData[$key]['status'] = $value->status;
             $lstUserJsonData[$key]['clicks'] = $jsonData['clicks'];
             $lstUserJsonData[$key]['latestPayDay'] = $jsonData['latestPayDay'];
-            $lstUserJsonData[$key]['payAmount'] = number_format($jsonData['payAmount']) . ' VND';
-            $lstUserJsonData[$key]['totalPay'] = number_format($jsonData['totalPay']) . ' VND';
+            $lstUserJsonData[$key]['payAmount'] = number_format($jsonData['payAmount']);
+            $lstUserJsonData[$key]['totalPay'] = number_format($jsonData['totalPay']);
         }
         return $lstUserJsonData;
     }

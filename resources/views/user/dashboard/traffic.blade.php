@@ -9,14 +9,12 @@
       <div class="count @if($data['payAmount'] == 0) red @else green @endif">{{ $data['payAmount'] }}</div>
     </div>
     <div class="col-md-2 col-sm-4  tile_stats_count">
-      <span class="count_top"><i class="fa fa-user"></i>Click hiện tại</span>
-      <div class="count green">2,500</div>
-      {{-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> --}}
+      <span class="count_top"><i class="fa fa-user"></i>Tổng thanh toán</span>
+      <div class="count green">{{ $data['totalPay'] }}</div>
     </div>
     <div class="col-md-2 col-sm-4  tile_stats_count">
-      <span class="count_top"><i class="fa fa-user"></i>Click trung bình</span>
-      <div class="count">4,567</div>
-      {{-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span> --}}
+      <span class="count_top"><i class="fa fa-user"></i>Ngày thanh toán gần nhất</span>
+      <div class="count">{{ $data['latestPayDay'] }}</div>
     </div>
     {{-- <div class="col-md-2 col-sm-4  tile_stats_count">
       <span class="count_top"><i class="fa fa-user"></i>Block rate</span>

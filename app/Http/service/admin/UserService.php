@@ -65,10 +65,12 @@ class UserService extends CookieService
         foreach ($userInfo->payDays as $pay => $value) {
             $latestPayDay = $pay;
             $totalPay += $value;
-
         }
         return [
-            'clicks'  => $userInfo->clicks, 'payAmount' => $userInfo->amount, 'totalPay' => $totalPay, 'latestPayDay' => $latestPayDay
+            'clicks'  => $userInfo->clicks,
+            'payAmount' => $userInfo->amount,
+            'totalPay' => $totalPay,
+            'latestPayDay' => $latestPayDay
         ];
     }
 

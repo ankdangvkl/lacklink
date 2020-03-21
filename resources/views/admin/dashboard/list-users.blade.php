@@ -20,7 +20,7 @@
             <th scope="col">Tên tài khoản</th>
             <th scope="col">Tên người dùng</th>
             <th scope="col" width="400px;">Liên kết đến Facebook</th>
-            <th scope="col">Tổng click</th>
+            <th scope="col">Số click còn</th>
             <th scope="col">Số dư</th>
             <th scope="col">Thanh toán gần nhất</th>
             <th scope="col">Tổng thanh toán</th>
