@@ -5,10 +5,10 @@
               <ul class="nav side-menu">
                 <li><a href="{{ url('/') }}"><i class="fa fa-home"></i>Tổng quan</a>
                 </li>
-                <li><a href="{{ url('/access') }}"><i class="fa fa-edit"></i>Lịch sử truy cập</a>
+                {{-- <li><a href="{{ url('/access') }}"><i class="fa fa-edit"></i>Lịch sử truy cập</a>
                 </li>
                 <li><a href="{{ url('/campaign') }}"><i class="fa fa-desktop"></i>Lịch sử giao dịch</a>
-                </li>
+                </li> --}}
                 {{-- <li><a href="{{ url('/domain') }}"><i class="fa fa-table"></i>Tên miền</a>
                 </li>
                 <li><a href="{{ url('/package') }}"><i class="fa fa-bar-chart-o"></i>Mua gói</a>

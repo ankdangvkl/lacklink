@@ -12,6 +12,11 @@
         <div class="clearfix"></div>
     </div>
 </div>
+@if (isset($msg))
+<div class="alert alert-success">
+{{ $msg }}
+</div>
+@endif
 <br />
 <div class="row dashboard_graph">
     <table class="table">

@@ -50,9 +50,18 @@ class LinkController extends Controller
         ]);
     }
 
-    public function editLinkForm($userAccount, $linkId)
+    public function editLinkForm()
     {
-        // return view()->with('','');
+        $isEditSucc = $this->linkService->edit(
+            $this->request->userAccount,
+            $this->request->linkContent,
+            $this->request->linkId
+        );
+        $msg = 'Cập nhật link không thành công. Hãy thử lại!';
+        if ($isEditSucc) {
+            $msg = 'Cập nhật link thành công!';
+        }
+        return redirect('/')->with('msg', $msg);
     }
 
     public function remove($userAccount, $linkId)

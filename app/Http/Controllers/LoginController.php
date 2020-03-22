@@ -63,19 +63,17 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         Log::info('//====================================================================//');
-        Log::info('//   Logging page!');
+        Log::info('//   Logging!');
         Log::info('//   Request: ' . $request);
         $this->user = $this->loginService->getUserByName($request);
         if ($this->user == null) {
-            Log::info('//   username: [' . $request->input('username') . '] not found.');
-            Log::info('//   Show message: [' . Message::ERR_LOGIN . ']');
+            Log::info('//   username [' . $request->input('username') . '] not found.');
             return view(ViewPath::LOGIN)->with('error', Message::ERR_LOGIN);
         }
         $this->loginService->setCookie($request, $this->user);
         if ($this->user->role == Permission::ADMIN) {
             $this->lstUser = $this->userService->getAll(TablesName::USERS);
-            Log::info('//   User logging is admin. Redirect to admin page!');
-            Log::info('//   Get all user for admin page!');
+            Log::info('//   User is admin. Redirect to admin page!');
             Log::info($this->lstUser);
             return view(ViewPath::ADMIN_DASHBOARD_INDEX)->with(
                 $this->listUser,

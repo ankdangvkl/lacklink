@@ -12,13 +12,15 @@
     </head>
     <body>
         <div class="login-dark">
-            <form action="{{ url('/create-user') }}" method="post">
-              @csrf
-            <div class="form-group"><input class="form-control" type="text" name="link" value="{{ $linkContent }}"/></div>
-                <input type="hidden" name="userAccount" value="{{ $userAccount }}"/>
-                <input type="hidden" name="linkId" value="{{ $linkId }}"/>blade
-                <a href="{{ url()->previous() }}" class="btn btn-primary btn-block" type="submit">Back</a>
-                <button class="btn btn-primary btn-block" type="submit">Cập nhật</button>
+            <form action="{{ url('/link-edit') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <input class="form-control" type="text" name="linkContent" value="{{ $linkContent }}"/>
+                </div>
+                <div class="form-group"><input class="form-control" type="hidden" name="userAccount" value="{{ $userAccount }}"/></div>
+                <div class="form-group"><input type="hidden" name="linkId" value="{{ $linkId }}"/></div>
+                <div class="form-group"><a href="{{ url()->previous() }}" class="btn btn-primary btn-block" type="submit">Back</a></div>
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Cập nhật</button></div>
             </form>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
