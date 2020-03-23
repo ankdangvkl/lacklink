@@ -21,7 +21,7 @@ class CommonService
     public function getUserByUserAccount($userAccount)
     {
         return \DB::table(TablesName::USERS)
-            ->where('name', '=', $userAccount)
+            ->where('user_account', '=', $userAccount)
             ->where('status', '<>', Status::DEACTIVE)
             ->first();
     }

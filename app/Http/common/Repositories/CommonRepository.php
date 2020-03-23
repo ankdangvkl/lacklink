@@ -16,18 +16,24 @@ class CommonRepository
     public function getUserByUserAccount($userAccount)
     {
         return \DB::table(TablesName::USERS)
-            ->where('name', '=', $userAccount)->where('status', '<>', Status::DEACTIVE)->first();
+            ->where('user_account', '=', $userAccount)
+            ->where('status', '<>', Status::DEACTIVE)
+            ->first();
     }
 
     public function getJsonData($userAccount)
     {
         $data = [];
 
-        $data['userinfo'] = json_decode(file_get_contents(public_path(
-            FilePath::USER_FILE_PATH
-                . $userAccount
-                . FilePath::USER_INFO_JSON_FILE
-        )));
+        $data['userinfo'] = json_decode(
+            file_get_contents(
+                public_path(
+                    FilePath::USER_FILE_PATH
+                    . $userAccount
+                    . FilePath::USER_INFO_JSON_FILE
+                )
+            )
+        );
         $data['userFakeLink'] = json_decode(file_get_contents(public_path(
             FilePath::USER_FILE_PATH
                 . $userAccount

@@ -15,8 +15,8 @@
             <form action="{{ url('/create-user') }}" method="post">
               @csrf
                 {{-- <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div> --}}
-                <div class="form-group"><input class="form-control" type="text" name="username" placeholder="Tên người dùng"></div>
-                <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Tài khoản người dùng"></div>
+                <div class="form-group"><input class="form-control" type="text" name="userName" placeholder="Tên người dùng"></div>
+                <div class="form-group"><input class="form-control" type="text" name="userAccount" placeholder="Tài khoản người dùng"></div>
                 <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Mật khẩu"></div>
                 <div class="form-group"><input class="form-control" type="text" name="address" placeholder="Liên kết Facebook"></div>
                 <a href="{{ url()->previous() }}" class="btn btn-primary btn-block" type="submit">Back</a>

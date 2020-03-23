@@ -77,6 +77,12 @@ class LinkService
         return (array_key_last($this->getUserListFakeLink($userAccount)) + 1);
     }
 
+    public function isDuplicateKey($userAccount)
+    {
+        $this->getUserListFakeLink($userAccount);
+        return false;
+    }
+
     private function removeLinkFromListLink($listFakeLink, $linkId)
     {
         foreach ($listFakeLink as $key => $link) {

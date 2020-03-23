@@ -36,7 +36,9 @@ class LinkController extends Controller
         if ($user == null) {
             return redirect()->back()->with('error', 'Người dùng không hợp lệ!');
         }
-        $isAddLinkSuccess = $this->linkService->add($user->name, $this->request->linkId, $this->request->linkName);
+
+        $userFakeLinks = $this->linkService->getUserListFakeLink($this->request->userAccount);
+        $isAddLinkSuccess = $this->linkService->add($user->user_account, $this->request->linkId, $this->request->linkName);
         $message = $isAddLinkSuccess == true ? 'Thêm link thành công!' : 'Thêm link thất bại, hãy thử lại!';
         return redirect('/')->with('msg', $message);
     }

@@ -16,10 +16,10 @@ class LoginService extends CookieService
         $this->loginRepository = $loginRepository;
     }
 
-    public function getUserByName(Request $request)
+    public function getUserByUserAccount(Request $request)
     {
-        $user = $this->loginRepository->getUserByName('users', $request->input('name'));
-        if ($user == null || !$this->validUser($request->input('password'), $user)) {
+        $user = $this->loginRepository->getUserByUserAccount('users', $request->userAccount);
+        if ($user == null || !$this->validUser($request->password, $user)) {
             return null;
         }
         return $user;

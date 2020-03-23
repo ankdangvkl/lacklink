@@ -21,35 +21,34 @@ class LoginController extends Controller
     private $user;
     private $userService;
     private $lstUser;
+    private $userData = [];
+    private $request;
     private $listUser = 'listUser';
 
-    public function __construct(
-        LoginService $loginService,
-        UserService $userService
-    ) {
+    public function __construct(LoginService $loginService, UserService $userService, Request $request)
+    {
         $this->loginService = $loginService;
         $this->userService = $userService;
+        $this->request = $request;
     }
 
-    public function index(Request $request)
+    public function index()
     {
         Log::info('//====================================================================//');
         Log::info('//   URL: ' . url(Url::INDEX));
-        Log::info('//   Request: ' . $request);
-        $userDataCookie = $this->loginService->getCookie($request);
+        Log::info('//   Request: ' . $this->request);
+        $userDataCookie = $this->loginService->getCookie($this->request);
         if ($userDataCookie == null) {
             Log::info('//   Not yet logging! Redirect to login page!');
             return view(ViewPath::LOGIN);
         }
         if ($userDataCookie->role == Permission::USER) {
-            Log::info('//   Logged as user [' . $userDataCookie->name . ']. Redirect to user page!');
-            $data = $this->userService->getUserJsonData($userDataCookie->name);
-            $fakeLinks = $this->userService->getUsersLinks($userDataCookie->name);
-            $data['name'] = $userDataCookie->name;
-            $data['fakeLinks'] = $fakeLinks;
-            $data['payAmount'] = number_format($data['payAmount']);
-            $data['totalPay'] = number_format($data['totalPay']);
-            return view(ViewPath::USER_DASHBOARD_INDEX)->with('data', $data);
+            Log::info('//   Logged as user [' . $userDataCookie->userAccount . ']. Redirect to user page!');
+            $this->userData = $this->userService->getUserJsonData($userDataCookie->userAccount);
+            $this->userData['userAccount'] = $userDataCookie->userAccount;
+            $this->userData['userName'] = $userDataCookie->userName;
+            $this->userData['fakeLinks'] = $this->userService->getUsersLinks($userDataCookie->userAccount);
+            return view(ViewPath::USER_DASHBOARD_INDEX)->with('userData', $this->userData);
         }
         $this->lstUser = $this->userService->getAll(TablesName::USERS);
         Log::info('//   Logged as admin. Redirect to admin page! Gett all user for admin page.');
@@ -60,33 +59,33 @@ class LoginController extends Controller
         );
     }
 
-    public function login(Request $request)
+    public function login()
     {
         Log::info('//====================================================================//');
         Log::info('//   Logging!');
-        Log::info('//   Request: ' . $request);
-        $this->user = $this->loginService->getUserByName($request);
-        if ($this->user == null) {
-            Log::info('//   username [' . $request->input('username') . '] not found.');
+        Log::info('//   Request: ' . $this->request);
+        $this->userData = $this->loginService->getUserByUserAccount($this->request);
+        if ($this->userData == null) {
+            Log::info('//   username [' . $this->request->userAccount . '] not found.');
             return view(ViewPath::LOGIN)->with('error', Message::ERR_LOGIN);
         }
-        $this->loginService->setCookie($request, $this->user);
-        if ($this->user->role == Permission::ADMIN) {
+        $this->loginService->setCookie($this->request, $this->userData);
+        if ($this->userData->role == Permission::ADMIN) {
             $this->lstUser = $this->userService->getAll(TablesName::USERS);
             Log::info('//   User is admin. Redirect to admin page!');
             Log::info($this->lstUser);
-            return view(ViewPath::ADMIN_DASHBOARD_INDEX)->with(
-                $this->listUser,
-                $this->handleUserDataResponse($this->lstUser)
-            );
+            return view(ViewPath::ADMIN_DASHBOARD_INDEX)
+                ->with(
+                    $this->listUser,
+                    $this->handleUserDataResponse()
+                );
         }
-        $data = $this->userService->getUserJsonData($request->name);
-        $fakeLinks = $this->userService->getUsersLinks($request->name);
-        $data['name'] = $request->name;
-        $data['fakeLinks'] = $fakeLinks;
-        $data['payAmount'] = number_format($data['payAmount']);
-        $data['totalPay'] = number_format($data['totalPay']);
-        return view(ViewPath::USER_DASHBOARD_INDEX)->with('data', $data);
+        $userName = $this->userData->user_name;
+        $this->userData = $this->userService->getUserJsonData($this->request->userAccount);
+        $this->userData['userAccount'] = $this->request->userAccount;
+        $this->userData['userName'] =  $userName;
+        $this->userData['fakeLinks'] = $this->userService->getUsersLinks($this->userData['userAccount']);
+        return view(ViewPath::USER_DASHBOARD_INDEX)->with('userData', $this->userData);
     }
 
     public function logout(Request $request)
@@ -101,21 +100,18 @@ class LoginController extends Controller
         return redirect(Url::INDEX);
     }
 
-    private function handleUserDataResponse($userList)
+    private function handleUserDataResponse()
     {
         $lstUserJsonData = [];
         foreach ($this->lstUser as $key => $value) {
-            $jsonData = $this->userService->getUserJsonData($value->name);
+            $jsonData = $this->userService->getUserJsonData($value->user_account);
             $lstUserJsonData[$key]['id'] = $value->id;
             $lstUserJsonData[$key]['username'] = $value->user_name;
-            $lstUserJsonData[$key]['name'] = $value->name;
+            $lstUserJsonData[$key]['userAccount'] = $value->user_account;
             $lstUserJsonData[$key]['address'] = $value->address;
             $lstUserJsonData[$key]['directory'] = FilePath::USER_FILE_PATH . $value->directory;
             $lstUserJsonData[$key]['status'] = $value->status;
             $lstUserJsonData[$key]['clicks'] = $jsonData['clicks'];
-            $lstUserJsonData[$key]['latestPayDay'] = $jsonData['latestPayDay'];
-            $lstUserJsonData[$key]['payAmount'] = number_format($jsonData['payAmount']);
-            $lstUserJsonData[$key]['totalPay'] = number_format($jsonData['totalPay']);
         }
         return $lstUserJsonData;
     }

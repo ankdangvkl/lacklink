@@ -41,17 +41,17 @@ class UserController extends Controller
         Log::info('//====================================================================//');
         Log::info('//   URL: ' . url(Url::CREATE_USER));
         Log::info('//   Request: ' . $request);
-        $name = $request->input('name');
+        $userAccount = $request->userAccount;
         try {
-            if ($this->userService->getUserByName($name) == null) {
-                Log::info('//   The user :[' . $name . '] are not exists.');
-                Log::info('//   Create user :[' . $name . ']');
+            if ($this->userService->getUserByName($userAccount) == null) {
+                Log::info('//   The user :[' . $userAccount . '] are not exists.');
+                Log::info('//   Create user :[' . $userAccount . ']');
                 DB::beginTransaction();
                 $this->userService->addUser([
-                    'username' => $request->input('username'),
-                    'userAccount' => $request->input('name'),
-                    'address' => $request->input('address'),
-                    'password' => $request->input('password')
+                    'userName' => $request->userName,
+                    'userAccount' => $request->userAccount,
+                    'address' => $request->address,
+                    'password' => $request->password
                 ]);
                 DB::commit();
                 return redirect('/')->with('success', 'Create user success!');

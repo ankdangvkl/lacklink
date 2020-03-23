@@ -15,10 +15,10 @@ class LoginRepository
 
     }
 
-    public function getUserByName($table, $username)
+    public function getUserByUserAccount($table, $username)
     {
         return \DB::table($table)
-            ->where('name', '=', $username)
+            ->where('user_account', '=', $username)
             ->where('status', '<>', Status::DEACTIVE)
             ->first();
     }

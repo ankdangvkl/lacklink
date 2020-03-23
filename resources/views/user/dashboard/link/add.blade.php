@@ -14,11 +14,13 @@
         <div class="login-dark">
             <form action="{{ url('/link-add') }}" method="post"> {{-- TO-DO add url /link-add/{name}/{id} --}}
               @csrf
+              <div class="form-group">
+                </span><input class="form-control" type="text" name="linkId" placeholder="Fake link id" value="{{ $idNewLink }}">
+            </div>
                 <div class="form-group">
                     <input class="form-control" type="text" name="linkName" placeholder="Fakelink">
                 </div>
                 <input type="hidden" name="userAccount" value="{{ $userAccount }}">
-                <input type="hidden" name="linkId" value="{{ $idNewLink }}">
                 <a href="{{ url()->previous() }}" class="btn btn-primary btn-block" type="submit">Back</a><button class="btn btn-primary btn-block" type="submit">Thêm</button>
             </form>
         </div>

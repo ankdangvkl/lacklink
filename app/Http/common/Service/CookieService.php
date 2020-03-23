@@ -24,19 +24,10 @@ class CookieService
 
     public function setCookie(Request $request, $userInfo)
     {
-
         if ($this->getCookie($request) == null) {
             $cookieData = $this->generateUserCookieData($userInfo);
-            Log::info('//   Cookie is not exists!');
-            Log::info('//   Create cookie!');
-            Log::info('//   Cookie name: ' . CookieInfo::NAME);
-            Log::info('//   Cookie time: ' . CookieInfo::TIME);
-            Log::info('//   Cookie data: ' . $cookieData);
-            \Cookie::queue(\Cookie::make(
-                CookieInfo::NAME,
-                $cookieData,
-                CookieInfo::TIME
-            ));
+            Log::info('//   Cookie is not exists! Create cookie!');
+            \Cookie::queue(\Cookie::make(CookieInfo::NAME, $cookieData, CookieInfo::TIME));
         }
     }
 
@@ -56,7 +47,8 @@ class CookieService
 
     private function generateUserCookieData($user)
     {
-        return '{"name":' . '"' . $user->name   . '",'
+        return '{"userAccount":' . '"' . $user->user_account . '",'
+            . '"userName":' . '"' . $user->user_name . '",'
             . '"role":'   . '"' . $user->role   . '",'
             . '"status":' . '"' . $user->status . '"}';
     }

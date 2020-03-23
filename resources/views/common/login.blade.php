@@ -19,7 +19,7 @@
                 </div>
                 @endif
                 <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-                <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Tài khoản người dùng"></div>
+                <div class="form-group"><input class="form-control" type="text" name="userAccount" placeholder="Tài khoản người dùng"></div>
                 <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Mật khẩu"></div>
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Đăng nhập</button></div>
                 @csrf

@@ -20,15 +20,13 @@ class UserService extends CookieService
         $this->userRepository = $userRepository;
     }
 
-    public function getUserByName($username)
+    public function getUserByName($userAccount)
     {
-        // select user by name
-        return \DB::table('users')->where('name', '=', $username)->first();
+        return \DB::table('users')->where('user_account', '=', $userAccount)->first();
     }
 
     public function getById($id)
     {
-        // select user by id
         return \DB::table('users')->where('id', '=', $id)->first();
     }
 
@@ -55,41 +53,31 @@ class UserService extends CookieService
     public function getUserJsonData($username)
     {
         $userInfo = \file_get_contents(
-            public_path(FilePath::USER_FILE_PATH
-                . $username
-                . FilePath::USER_INFO_JSON_FILE)
+            public_path(
+                FilePath::USER_FILE_PATH
+                    . $username
+                    . FilePath::USER_INFO_JSON_FILE
+            )
         );
         $userInfo = json_decode($userInfo);
-        $totalPay = 0;
-        $latestPayDay = '';
-        foreach ($userInfo->payDays as $pay => $value) {
-            $latestPayDay = $pay;
-            $totalPay += $value;
-        }
-        return [
-            'clicks'  => $userInfo->clicks,
-            'payAmount' => $userInfo->amount,
-            'totalPay' => $totalPay,
-            'latestPayDay' => $latestPayDay
-        ];
+        return ['clicks'  => $userInfo->clicks];
     }
 
     public function getUsersLinks($username)
     {
         $fakeLinks = \file_get_contents(
-            public_path(FilePath::USER_FILE_PATH
-                . $username
-                . FilePath::USER_FAKE_LINK_JSON_FILE)
+            public_path(
+                FilePath::USER_FILE_PATH
+                    . $username
+                    . FilePath::USER_FAKE_LINK_JSON_FILE
+            )
         );
         $fakeLinks = json_decode($fakeLinks);
         $data = [];
-        foreach ($fakeLinks as $pay => $value) {
-            $data[$pay] = $value;
-
+        foreach ($fakeLinks as $key => $link) {
+            $data[$key] = $link;
         }
-        return [
-            'fakeLinks' => $data
-        ];
+        return $data;
     }
 
     private function handlerUserJsonData($userInfo)
@@ -101,7 +89,7 @@ class UserService extends CookieService
             $userFakeLinkFile = $dirPath . FilePath::USER_FAKE_LINK_JSON_FILE;
             $userTrackingFile = $dirPath . FilePath::USER_TRACKING_TXT_FILE;
             Log::info('//   Create file [' . $userInfoFile . '].');
-            \File::put($userInfoFile, '{"clicks" : 0, ' . '"clickDays" : [], ' . '"amount" : 0, ' . '"payDays" : []}');
+            \File::put($userInfoFile, '{"clicks" : 0}');
             Log::info('//   Create file [' . $userFakeLinkFile . ']');
             \File::put($userFakeLinkFile, '{}');
             Log::info('//   Create file [ index.php ]');
@@ -117,8 +105,8 @@ class UserService extends CookieService
     private function generateUserData($userInfo)
     {
         return array(
-            'user_name'    => $userInfo['username'],
-            'name'         => $userInfo['userAccount'],
+            'user_name'    => $userInfo['userName'],
+            'user_account' => $userInfo['userAccount'],
             "password"     => $userInfo['password'],
             "address"      => $userInfo['address'],
             "directory"    => $userInfo['userAccount'] . '/',

@@ -19,14 +19,12 @@
             <th scope="col"  style="width:2%">#</th>
             {{-- <th scope="col">Tên tài khoản</th> --}}
             <th scope="col">Tên người dùng</th>
+            <th scope="col">Tai khoan nguoi dung</th>
             {{-- <th scope="col" width="400px;">Liên kết đến Facebook</th> --}}
             <th scope="col">Số click còn</th>
-            <th scope="col">Số dư</th>
-            <th scope="col">Thanh toán gần nhất</th>
-            <th scope="col">Tổng thanh toán</th>
             <th scope="col">Trạng thái hiện tại</th>
             {{-- <th scope="col" style="width: 7%;">Action</th> --}}
-            <th scope="col" style="width:10%"></th>
+            <th scope="col" style="width:10%">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -43,11 +41,9 @@
                     <th scope="row" style="width:2%">{{ $user['id'] }}</th>
                     {{-- <td scope="row">{{ $user['name'] }}</td> --}}
                     <td scope="row">{{ $user['username'] }}</td>
+                    <td scope="row">{{ $user['userAccount'] }}</td>
                     {{-- <td scope="row" width="400px;">{{ $user['address'] }}</td> --}}
                     <td scope="row">{{ $user['clicks'] }}</td>
-                    <td scope="row">{{ $user['payAmount'] }}</td>
-                    <td scope="row">{{ $user['latestPayDay'] }}</td>
-                    <td scope="row">{{ $user['totalPay'] }}</td>
                     <td scope="row">
                     @if($user['status'] == 1)
                         <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Kích hoạt</span>
