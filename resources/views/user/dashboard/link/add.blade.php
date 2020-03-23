@@ -21,7 +21,7 @@
                     <input class="form-control" type="text" name="linkName" placeholder="Fakelink">
                 </div>
                 <input type="hidden" name="userAccount" value="{{ $userAccount }}">
-                <a href="{{ url()->previous() }}" class="btn btn-primary btn-block" type="submit">Back</a><button class="btn btn-primary btn-block" type="submit">Thêm</button>
+                <a href="{{ url('/') }}" class="btn btn-primary btn-block" type="submit">Back</a><button class="btn btn-primary btn-block" type="submit">Thêm</button>
             </form>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

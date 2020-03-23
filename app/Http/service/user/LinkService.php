@@ -32,10 +32,13 @@ class LinkService
         }
     }
 
-    public function edit($userAccount, $linkContent, $linkId)
+    public function edit($userAccount, $linkName, $linkId)
     {
+        if ($userAccount == null || $linkName ==  null || $linkId == null) {
+            return false;
+        }
        $this->listFakeLink = $this->getUserListFakeLink($userAccount);
-       $this->listFakeLink[$linkId] = $linkContent;
+       $this->listFakeLink[$linkId] = $linkName;
        if (\File::put(public_path(
         FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_FAKE_LINK_JSON_FILE),
         json_encode($this->listFakeLink))) {
@@ -49,6 +52,20 @@ class LinkService
     {
         $this->listFakeLink = $this->getUserListFakeLink($userAccount);
         return $this->listFakeLink[$linkId];
+    }
+
+    public function checkDuplicateLinkContent($userAccount, $linkContent, $linkId)
+    {
+        $this->listFakeLink = $this->getUserListFakeLink($userAccount);
+        foreach ($this->listFakeLink as $key => $content) {
+            if ($content == $linkContent) {
+                return true;
+            }
+            if ($key == $linkId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function remove($userAccount, $linkId)

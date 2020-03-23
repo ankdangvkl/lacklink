@@ -19,7 +19,7 @@
                 <div class="form-group"><input class="form-control" type="text" name="userAccount" placeholder="Tài khoản người dùng"></div>
                 <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Mật khẩu"></div>
                 <div class="form-group"><input class="form-control" type="text" name="address" placeholder="Liên kết Facebook"></div>
-                <a href="{{ url()->previous() }}" class="btn btn-primary btn-block" type="submit">Back</a>
+                <a href="{{ url('/') }}" class="btn btn-primary btn-block" type="submit">Back</a>
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Đăng ký</button></div>
             </form>
         </div>

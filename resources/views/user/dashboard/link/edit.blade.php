@@ -15,11 +15,11 @@
             <form action="{{ url('/link-edit') }}" method="post">
                 @csrf
                 <div class="form-group">
-                    <input class="form-control" type="text" name="linkContent" value="{{ $linkContent }}"/>
+                    <input class="form-control" type="text" name="linkName" value="{{ $linkName }}"/>
                 </div>
                 <div class="form-group"><input class="form-control" type="hidden" name="userAccount" value="{{ $userAccount }}"/></div>
                 <div class="form-group"><input type="hidden" name="linkId" value="{{ $linkId }}"/></div>
-                <div class="form-group"><a href="{{ url()->previous() }}" class="btn btn-primary btn-block" type="submit">Back</a></div>
+                <div class="form-group"><a href="{{ url('/') }}" class="btn btn-primary btn-block" type="submit">Back</a></div>
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Cập nhật</button></div>
             </form>
         </div>
