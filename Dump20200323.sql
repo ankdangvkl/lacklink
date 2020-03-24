@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
--- Host: localhost    Database: lacklink
+-- Host: 127.0.0.1    Database: lacklink
 -- ------------------------------------------------------
 -- Server version	8.0.18
 
@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(100) NOT NULL COMMENT 'user_name : name of user,\nname : name of user account,\naddress : the facebook url of user,\n',
-  `name` varchar(100) NOT NULL,
+  `user_account` varchar(100) NOT NULL,
   `password` varchar(200) NOT NULL,
   `address` varchar(255) NOT NULL,
   `directory` varchar(200) NOT NULL COMMENT 'Use for save the link to directory',
@@ -58,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-21 10:45:33
+-- Dump completed on 2020-03-23 22:09:08
