@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Exception;
 use Illuminate\Http\Request;
 
-use App\Http\common\CookieService;
 use App\Http\common\Constant\ViewPath;
 use App\Http\common\Constant\Url;
 use App\Http\Controllers\Controller;
@@ -56,7 +55,7 @@ class UserController extends Controller
                 DB::commit();
                 return redirect('/')->with('success', 'Create user success!');
             }
-            Log::info('//   The user :[' . $name . '] are existed.');
+            // Log::info('//   The user :[' . $name . '] are existed.');
             Log::info('//   Rediect back');
             return redirect('/');
         } catch (Exception $ex) {
@@ -97,5 +96,34 @@ class UserController extends Controller
             DB::rollback();
             return redirect()->back()->with('error', 'Update user status failed! Please try again!');
         }
+    }
+
+    public function showAddClick(Request $request, $id)
+    {
+        if (!$this->userService->isAdmin($request)) {
+            return redirect()->back();
+        }
+        $userInfo = $this->userService->getById($id);
+        if ($userInfo == null) {
+            return redirect()->back()->with(['msg' => 'Nguoi dung khong ton tai!']);
+        }
+        return view(ViewPath::ADMIN_ADD_CLICK)->with(['userInfo' => $userInfo]);
+    }
+
+    public function addClick(Request $request)
+    {
+        $clickNum = $request->clickNum;
+        $userId = $request->userId;
+        $userInfo = $this->userService->getById($userId);
+        if ($userInfo == null) {
+            return redirect()->back()->with(['' => '']);
+        }
+        $remainingClick = $this->userService->getUserClicks($userInfo->user_account);
+        $remainingClick = $remainingClick->clicks + $clickNum;
+        $isAddClickSuccess = $this->userService->putUserClicks($userInfo->user_account, $remainingClick);
+        if ($isAddClickSuccess == true) {
+            return redirect('/')->with(['msg' => 'Nap click thanh cong!']);
+        }
+        return redirect('/')->with(['msg' => 'Nap click thaat bai!']);
     }
 }

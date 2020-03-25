@@ -19,6 +19,8 @@ Route::get('/create-user', 'Admin\UserController@index');
 Route::post('/create-user', 'Admin\UserController@createUser');
 Route::get('/user-detail/{id}', 'Admin\UserController@detail');
 Route::get('/user-status-update/{id}', 'Admin\UserController@updateUserStatus');
+Route::get('/show-add-click/{id}', 'Admin\UserController@showAddClick');
+Route::post('/add-click', 'Admin\UserController@addClick');
 
 Route::get('/access', 'User\AccessController@index');
 Route::get('/domain', 'User\DomainController@index');

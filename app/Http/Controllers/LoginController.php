@@ -45,9 +45,18 @@ class LoginController extends Controller
         if ($userDataCookie->role == Permission::USER) {
             Log::info('//   Logged as user [' . $userDataCookie->userAccount . ']. Redirect to user page!');
             $this->userData = $this->userService->getUserJsonData($userDataCookie->userAccount);
+            $userDataTemp = $this->userData;
+            $this->userData = [];
+            foreach ($userDataTemp as $key => $value) {
+                if ($key == 'clicks') {
+                    $this->userData['clicks'] = $value;
+                }
+                $this->userData[$key] = $value;
+            }
             $this->userData['userAccount'] = $userDataCookie->userAccount;
             $this->userData['userName'] = $userDataCookie->userName;
             $this->userData['fakeLinks'] = $this->userService->getUsersLinks($userDataCookie->userAccount);
+            // dd($this->userData);
             return view(ViewPath::USER_DASHBOARD_INDEX)->with('userData', $this->userData);
         }
         $this->lstUser = $this->userService->getAll(TablesName::USERS);
@@ -82,9 +91,18 @@ class LoginController extends Controller
         }
         $userName = $this->userData->user_name;
         $this->userData = $this->userService->getUserJsonData($this->request->userAccount);
+        $userDataTemp = $this->userData;
+        $this->userData = [];
+        foreach ($userDataTemp as $key => $value) {
+            if ($key == 'clicks') {
+                $this->userData['clicks'] = $value;
+            }
+            $this->userData[$key] = $value;
+        }
         $this->userData['userAccount'] = $this->request->userAccount;
         $this->userData['userName'] =  $userName;
         $this->userData['fakeLinks'] = $this->userService->getUsersLinks($this->userData['userAccount']);
+        // dd($this->userData);
         return view(ViewPath::USER_DASHBOARD_INDEX)->with('userData', $this->userData);
     }
 
@@ -104,7 +122,7 @@ class LoginController extends Controller
     {
         $lstUserJsonData = [];
         foreach ($this->lstUser as $key => $value) {
-            $jsonData = $this->userService->getUserJsonData($value->user_account);
+            $jsonData = (array)$this->userService->getUserJsonData($value->user_account);
             $lstUserJsonData[$key]['id'] = $value->id;
             $lstUserJsonData[$key]['username'] = $value->user_name;
             $lstUserJsonData[$key]['userAccount'] = $value->user_account;

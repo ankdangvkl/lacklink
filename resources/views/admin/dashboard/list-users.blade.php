@@ -24,7 +24,8 @@
             <th scope="col">Số click còn</th>
             <th scope="col">Trạng thái hiện tại</th>
             {{-- <th scope="col" style="width: 7%;">Action</th> --}}
-            <th scope="col" style="width:10%">Action</th>
+            <th scope="col" style="width:110px;"></th>
+            <th scope="col" style="width:100px;"></th>
           </tr>
         </thead>
         <tbody>
@@ -51,7 +52,7 @@
                       <span class="red" style="border: 1px solid #E74C3C;border-radius: 5px; padding: 5px;">Vô hiệu hoá</span>
                     @endif
                     </td>
-                    <td scope="row" style="width:10%">
+                    <td scope="row" style="width:110px;">
                         @if($user['status'] == 0)
                             <a href="{{ url('user-status-update/' . $user['id']) }}">
                                 <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Kích hoạt</span>
@@ -62,6 +63,12 @@
                                 <span class="red" style="border: 1px solid #E74C3C;border-radius: 5px; padding: 5px;">Vô hiệu hoá</span>
                             </a>
                         @endIf
+
+                    </td>
+                    <td scope="row" style="width:100px;">
+                        <a href="{{ url('show-add-click/' . $user['id']) }}">
+                            <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Nap click</span>
+                        </a>
                     </td>
                 </tr>
                 @endforeach

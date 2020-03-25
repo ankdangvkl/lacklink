@@ -1,10 +1,9 @@
 <div class="row">
-    <div class="col-md-12 col-sm-12 x_title dashboard_graph">
-        <div class="row ">
-            <div class="col-md-6">
-                <h3>Tên miền</h3>
-            </div>
-        </div>
+    <div class="col-md-12 col-sm-12  dashboard_graph">
+        <p style="font-size:20px;" class="red">Click con: {{ $userData['clicks'] }}</p>
+        <a href="{{ url('/link-add/' . $userData['userAccount']) }}" aria-haspopup="true" aria-expanded="false">
+            <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;margin-top:10px;">Thêm fakelink</span>
+        </a>
         <div class="clearfix"></div>
     </div>
 </div>
@@ -15,8 +14,7 @@
           <tr>
             <th scope="col">Key</th>
             <th scope="col">Fake link</th>
-            {{-- <th scope="col" style="width: 7%;">Trạng thái</th> --}}
-            {{-- <th scope="col" style="width: 10%;">Actions</th> --}}
+            <th scope="col">So luot truy cap</th>
             <th scope="col" style="width: 10%;"></th>
           </tr>
         </thead>
@@ -27,9 +25,7 @@
                     <tr>
                     <td scope="col">{{ $key }}</td>
                     <td scope="col">{{ $value }}</td>
-                    {{-- <td scope="col" style="width: 7%;">
-                        <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Kích hoạt</span>
-                    </td> --}}
+                    <td scope="col">{{ $userData[$key] }}</td>
                     <td scope="col" style="width: 10%;">
                         <a href="{{ url('/link-edit/' . $userData['userAccount'] . '/' . $key)}}">
                             <span class="green" style="border: 1px solid #1ABB9C;border-radius: 5px; padding: 5px;">Chỉnh sửa</span>

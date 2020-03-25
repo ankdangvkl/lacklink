@@ -5,6 +5,7 @@ namespace App\Http\service\user;
 use App\Http\repositories\LinkRepository;
 use App\Http\common\Repositories\CommonRepository;
 use App\Http\common\Constant\FilePath;
+use Exception;
 
 class LinkService
 {
@@ -21,13 +22,21 @@ class LinkService
 
     public function add($userAccount, $linkId, $linkName)
     {
-        $this->listFakeLink = $this->getUserListFakeLink($userAccount);
-        $this->listFakeLink[$linkId] = $linkName;
-        if (\File::put(
-            public_path(FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_FAKE_LINK_JSON_FILE),
-            json_encode($this->listFakeLink))) {
+        try {
+            $this->listFakeLink = $this->getUserListFakeLink($userAccount);
+            $this->listFakeLink[$linkId] = $linkName;
+            $userInfoClicks = (array) json_decode(\file_get_contents(public_path(FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_INFO_JSON_FILE)));
+            $userInfoClicks[$linkId] = 0;
+            \File::put(
+                public_path(FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_FAKE_LINK_JSON_FILE),
+                json_encode($this->listFakeLink)
+            );
+            \File::put(
+                public_path(FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_INFO_JSON_FILE),
+                json_encode($userInfoClicks)
+            );
             return true;
-        } else {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -37,11 +46,14 @@ class LinkService
         if ($userAccount == null || $linkName ==  null || $linkId == null) {
             return false;
         }
-       $this->listFakeLink = $this->getUserListFakeLink($userAccount);
-       $this->listFakeLink[$linkId] = $linkName;
-       if (\File::put(public_path(
-        FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_FAKE_LINK_JSON_FILE),
-        json_encode($this->listFakeLink))) {
+        $this->listFakeLink = $this->getUserListFakeLink($userAccount);
+        $this->listFakeLink[$linkId] = $linkName;
+        if (\File::put(
+            public_path(
+                FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_FAKE_LINK_JSON_FILE
+            ),
+            json_encode($this->listFakeLink)
+        )) {
             return true;
         } else {
             return false;
@@ -78,9 +90,12 @@ class LinkService
             return;
         }
         $listLinkAfterRemove = $this->removeLinkFromListLink($this->listFakeLink, $linkId);
-        \File::put(public_path(
-            FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_FAKE_LINK_JSON_FILE),
-            json_encode($listLinkAfterRemove));
+        \File::put(
+            public_path(
+                FilePath::USER_FILE_PATH . $userAccount . FilePath::USER_FAKE_LINK_JSON_FILE
+            ),
+            json_encode($listLinkAfterRemove)
+        );
         return;
     }
 

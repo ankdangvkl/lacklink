@@ -60,7 +60,7 @@ class UserService extends CookieService
             )
         );
         $userInfo = json_decode($userInfo);
-        return ['clicks'  => $userInfo->clicks];
+        return $userInfo;
     }
 
     public function getUsersLinks($username)
@@ -78,6 +78,31 @@ class UserService extends CookieService
             $data[$key] = $link;
         }
         return $data;
+    }
+
+    public function getUserClicks($userAccount)
+    {
+        $fakeLinks = \file_get_contents(
+            public_path(
+                FilePath::USER_FILE_PATH
+                    . $userAccount
+                    . FilePath::USER_INFO_JSON_FILE
+            )
+        );
+        $fakeLinks = json_decode($fakeLinks);
+        return $fakeLinks;
+    }
+
+    public function putUserClicks($userAccount, $remainingClick)
+    {
+        if (\File::put(public_path(
+            FilePath::USER_FILE_PATH
+                . $userAccount
+                . FilePath::USER_INFO_JSON_FILE
+        ), json_encode(['clicks' => $remainingClick]))) {
+            return true;
+        }
+        return false;
     }
 
     private function handlerUserJsonData($userInfo)
