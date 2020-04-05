@@ -10,13 +10,11 @@ class StaticClass {
         $json_arr  = json_decode(file_get_contents("reportClicks.json") , true);
 
         $json_arr["clicked"]++;
-
-        if (in_array($linkFake, $json_arr)) {
+        try {
             $json_arr[$linkFake]++;
-        } else {
+        } catch (Exception $e) {
             $json_arr[$linkFake] = 1;
         }
-
         file_put_contents('reportClicks.json', json_encode($json_arr));
         echo "\n reportClicks.json: " . $json_arr[$linkFake];
         self::$is_insert_done = true;
@@ -59,11 +57,20 @@ if ( strpos($r, 'http://m.facebook.com')!==false  &&   strpos($browser, '[FB')!=
 {
 
     try {
+        $dataArr = (array)json_decode(file_get_contents("linkFakes.json"), true);
+        echo $dataArr[$k];
 
-
-
-
-
+        $i = 0;
+        while($i <= 2) {
+            if(StaticClass::$is_insert_done) {
+                StaticClass::$is_insert_done = false;
+                StaticClass::insertData($dataArr[$k]);
+                break;
+            } else {
+                sleep(1);
+                $i++;
+            }
+        }
     } catch (Exception $e) {
         //echo 'Caught exception: ',  $e->getMessage(), "\n";
     }
